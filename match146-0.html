@@ -1,0 +1,96 @@
+<html>
+<head>
+<title>C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/7/21301441_Mohammod_Tasneem_Hasan_CSE422_07_Assignment01_Fall2024_-_Mohammod_Tasneem_Hasan.py</title>
+</head>
+<body bgcolor="white">
+<hr/>
+C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/7/21301441_Mohammod_Tasneem_Hasan_CSE422_07_Assignment01_Fall2024_-_Mohammod_Tasneem_Hasan.py<p></p><pre>
+import heapq
+
+<a name="1"></a><font color="#00FF00"><a href="match146-1.html#1" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_1_12.gif"/></a>
+
+class GraphSearchAStar:
+    def __init__(self, path_to_file):
+        self.connections, self.estimates = self.build_graph(path_to_file)
+
+    def build_graph(self, file_name):
+        connections = {}
+        estimates = {}
+        with open(file_name, 'r') as file:
+            for line in file:
+                parts = line.strip().split()
+</font>                if parts:
+                    city_name = parts[0]
+                    heuristic_value = int(parts[1])
+                    estimates[city_name] = heuristic_value
+                    # Build neighbors list with distances
+                    linked_nodes = {
+                        parts[i]: int(parts[i + 1])
+                        for i in range(2, len(parts), 2)
+                    }
+                    connections[city_name] = linked_nodes
+        return connections, estimates
+
+    def astar_search(self, start_node, goal_node):
+        open_queue = [(0, start_node)]
+<a name="0"></a><font color="#FF0000"><a href="match146-1.html#0" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_0_27.gif"/></a>
+
+        visited_nodes = {start_node: None}
+        cumulative_cost = {start_node: 0}
+
+        while open_queue:
+            _, current_node = heapq.heappop(open_queue)
+            if current_node == goal_node:
+                return visited_nodes, cumulative_cost
+
+            for adjacent, travel_cost in self.connections.get(current_node, {}).items():
+                new_cost = cumulative_cost[current_node] + travel_cost
+
+                if adjacent not in cumulative_cost or new_cost &lt; cumulative_cost[adjacent]:
+                    cumulative_cost[adjacent] = new_cost
+                    estimated_total = new_cost + self.estimates.get(adjacent, float('inf'))
+                    heapq.heappush(open_queue, (estimated_total, adjacent))
+                    visited_nodes[adjacent] = current_node
+</font>
+        return visited_nodes, cumulative_cost
+
+    def display_path(self, start, end, trace_path, total_costs):
+        path_sequence = [end]
+        node = end
+        while node != start:
+            node = trace_path[node]
+            path_sequence.append(node)
+        path_sequence.reverse()
+
+        print("Route:", " -&gt; ".join(path_sequence))
+        print("Distance traveled in total:", total_costs[end], "Kilometer")
+
+
+            
+    def find_and_show_route(self, origin, destination):
+        if origin not in self.estimates:
+            print("No route exists from the specified starting point.")
+            return
+    
+        if destination not in self.estimates:
+            print("No route exists to the specified endpoint.")
+            return
+        
+        path_trace, costs = self.astar_search(origin, destination)
+        
+        if destination in costs:
+            self.display_path(origin, destination, path_trace, costs)
+        else:
+            print("No route found.")
+
+
+# Input handling
+input_file_path = "Input file.txt"
+start_location = input("Enter starting node: ")
+end_location = input("Enter destination node: ")
+
+search_instance = GraphSearchAStar(input_file_path)
+search_instance.find_and_show_route(start_location, end_location)
+</pre>
+</body>
+</html>

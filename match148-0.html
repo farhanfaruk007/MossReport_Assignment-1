@@ -1,0 +1,85 @@
+<html>
+<head>
+<title>C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/4/21201140_Md._Naimuzzaman_Fahim_CSE422_04_Assignment01_Fall2024_-_MD._NAIMUZZAMAN_FAHIM.py</title>
+</head>
+<body bgcolor="white">
+<hr/>
+C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/4/21201140_Md._Naimuzzaman_Fahim_CSE422_04_Assignment01_Fall2024_-_MD._NAIMUZZAMAN_FAHIM.py<p></p><pre>
+#I write this code In VS Code
+
+from queue import PriorityQueue
+
+def A_Star_Search(GraphDict, Main_Node, Destination_Node):
+    PQ = PriorityQueue()
+    PQ.put((0,Main_Node))
+    Travel_Graph = {}
+
+    Start_Point = {node: float('inf') for node in GraphDict}
+<a name="1"></a><font color="#00FF00"><a href="match148-1.html#1" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_1_8.gif"/></a>
+
+    Start_Point[Main_Node] = 0
+
+    Travel_cost = {node: float('inf') for node in GraphDict}
+    Travel_cost[Main_Node] = GraphDict[Main_Node]['h']
+</font>
+    while not PQ.empty():
+        Current_Priority, Current_Point = PQ.get()
+
+        if (Current_Point == Destination_Node):
+<a name="0"></a><font color="#FF0000"><a href="match148-1.html#0" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_0_29.gif"/></a>
+
+            Optimal_Path = []
+
+            while Current_Point in Travel_Graph:
+                Optimal_Path.append(Current_Point)
+                Current_Point = Travel_Graph[Current_Point]
+
+            Optimal_Path.append(Main_Node)
+            Optimal_Path.reverse()
+            return f"Path: {' -&gt; '.join(Optimal_Path)}\nTotal distance: {Start_Point[Destination_Node]} km"
+
+
+        for Neig, Dist in GraphDict[Current_Point]['NeighbourDict'].items():
+            new_path = Start_Point[Current_Point] + Dist
+
+            if new_path &lt; Start_Point[Neig]:
+                Travel_Graph[Neig] = Current_Point
+                Start_Point[Neig] = new_path
+
+                Travel_cost[Neig] = new_path + GraphDict[Neig]['h']
+                PQ.put((Travel_cost[Neig], Neig))
+</font>
+    return "NO PATH FOUND"
+
+def text_to_graph(File):
+    GraphDict = {}
+    for line in File:
+        List = line.split()
+        Main_Node = List[0]
+        h = int(List[1])
+        NeighbourDict = {}
+
+        for i in range(2,len(List),2):
+<a name="2"></a><font color="#0000FF"><a href="match148-1.html#2" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_2_8.gif"/></a>
+
+            NeighbourNode = List[i] 
+            Distance = int(List[i+1])
+            NeighbourDict[NeighbourNode] = Distance
+
+        GraphDict[Main_Node] = {'h':h,'NeighbourDict':NeighbourDict}
+    
+    return GraphDict
+</font>
+
+Input_File = open('Input file.txt','r')
+GraphDict = text_to_graph(Input_File)
+Start_Node = input("Start node: ").strip()
+Destination_Node = input("Destination: ").strip()
+Output = A_Star_Search(GraphDict, Start_Node, Destination_Node)
+# Output = A_Star_Search(GraphDict, "Bucharest", "Arad")
+with open('Output file.txt', 'w') as Output_File:
+    Output_File.write(str(Output))
+print(Output)
+</pre>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<html>
+<head>
+<title>C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/6/20201217_Tanzina_Binte_Azad_CSE422_06_Assignment01_Fall2024.py_-_TANZINA_BINTE_AZAD.py</title>
+</head>
+<body bgcolor="white">
+<hr/>
+C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/9/22201518__Mahima_Mahzabin_Sandria_22201518_-_MAHIMA_MAHZABIN_SANDRIA.py<p></p><pre>
+import heapq as h
+
+file = open("input.txt", 'r')
+heuristic_val = {}
+city_array = []
+links = []
+
+for i in file:
+    l = i.strip().split()
+    heuristic_val[l[0]] = int(l[1])
+    path = []
+    for idx in range(len(l)):
+        if idx != 1:
+            path.append(l[idx])
+    city_array.append(path)
+
+for j in city_array:
+    for ind in range(1, len(j) - 1, 2):
+        if ind + 1 &lt; len(j):
+            a = [j[0]]
+            a.append(j[ind])
+            a.append(j[ind + 1])
+            links.append(a)
+
+class Node:
+    def __init__(self, ct, dis):
+        self.city = ct
+        self.distance = dis
+
+
+class p_queue:
+    def __init__(self):
+        self.loc = []
+
+    def pop(self):
+        city = h.heappop(self.loc)[1]
+        return city
+
+    def push(self, dist, city):
+        h.heappush(self.loc, (dist, city))
+
+    def isEmpty(self):
+        if self.loc == []:
+            return True
+        else:
+            return False
+
+
+
+rom = {}
+
+
+def create_graph():
+    for l in links:
+<a name="1"></a><font color="#00FF00"><a href="match208-0.html#1" target="0"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_1_7.gif"/></a>
+
+        city1 = l[0]
+        city2 = l[1]
+        cost = int(l[2])
+        rom.setdefault(city1, []).append(Node(city2, cost))
+        rom.setdefault(city2, []).append(Node(city1, cost))
+
+
+def heuristic(n):
+</font>    return heuristic_val[n]
+
+
+def a_star_search(st, goal):
+    dist = {}
+    path = {}
+    queue = p_queue()
+    queue.push(0, st)
+    path[st] = None
+    dist[st] = 0
+    exp = []
+
+<a name="0"></a><font color="#FF0000"><a href="match208-0.html#0" target="0"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_0_13.gif"/></a>
+
+    while not queue.isEmpty():
+        cur_node = queue.pop()
+        exp.append(cur_node)
+
+        if cur_node == goal:
+            break
+
+        for n in rom[cur_node]:
+            dis = dist[cur_node] + int(n.distance)
+            if n.city not in dist or dis &lt; dist[n.city]:
+                dist[n.city] = dis
+                total_cost = dis + heuristic(n.city)
+</font>                queue.push(total_cost, n.city)
+                path[n.city] = cur_node
+
+    out(st, goal, path, dist)
+
+
+def out(st, goal, path, dist):
+    g = goal
+    opt_path = []
+
+    if goal not in dist:
+        print("NO PATH FOUND")
+        return
+
+    while path.get(g) is not None:
+        opt_path.append(g)
+        g = path[g]
+
+    opt_path.append(st)
+    opt_path.reverse()
+
+    print("path:", end=" ")
+    for i in range(len(opt_path)):
+        if i != len(opt_path) - 1:
+            print(opt_path[i], end="-&gt;")
+        else:
+            print(opt_path[i])
+
+    print("Total distance:", dist[goal])
+
+
+
+source = input("Start Node: ")
+dest = "Bucharest"
+create_graph()
+a_star_search(source, dest)
+</pre>
+</body>
+</html>

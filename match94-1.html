@@ -1,0 +1,110 @@
+<html>
+<head>
+<title>C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/3/19101454_Sarahat_Noor_Sakib_CSE422_03_Lab_Assignment01_Fall2024_-_SARAHAT_NOOR_SAKIB.py</title>
+</head>
+<body bgcolor="white">
+<hr/>
+C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/12/22101021_Jishnu_Kumar_Bachhar_CSE422_12_Assignment01_Fall2024_-_JISHNU_KUMAR_BACHHAR.py<p></p><pre>
+romania = {}
+heuristic = {}
+
+def inp():
+    ls = []
+    inp = open("Input file.txt",'r')
+    for i in inp:
+        ls = i.split()
+        key = i[0]
+        val = i[1]
+        heuristic.update({key : int(val)})
+
+    ls1 = ls[2 : len(ls)-1]
+    for j in range(0, len(ls1), 2):
+        if j &gt;= len(ls1 - 1):
+            pass
+        else:
+            romania.update({key(ls[0],ls1[i]) : int(ls1[i+1])})
+
+def key(a, b):
+    key = [a, b]
+    return key
+
+inp()
+
+
+import heapq
+<a name="0"></a><font color="#FF0000"><a href="match94-0.html#0" target="0"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_0_22.gif"/></a>
+
+class priorityQueue:
+    def __init__(self):
+        self.cities = []
+    def push(self, city, cost):
+        heapq.heappush(self.cities,(cost, city))
+    def pop(self):
+        return heapq.heappop(self.cities)[1]
+    def isEmpty(self):
+        if self.cities == []:
+            return True
+        else:
+            return False
+    def check(self):
+        print(self.cities)
+
+class cityNode:
+    def __init__(self, city, dis):
+        self.city = str(city)
+        self.dis = str(dis)
+</font>
+def heuristic(node, values):
+    return values[node]
+
+
+def A_Star(start, goal):
+    path = {}
+    dis = {}
+    q = priorityQueue()
+    q.push(start, 0)
+    dis[start] = 0
+    path[start] = None
+    while q.isEmpty() == False:
+        current = q.pop()
+<a name="1"></a><font color="#00FF00"><a href="match94-0.html#1" target="0"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_1_19.gif"/></a>
+
+        if (current == goal):
+            break
+        for i in romania[current]:
+            gcost = dis[current] + int(i.dis)
+            if(i.city not in dis or gcost &lt; dis[i.city]):
+                dis[i.city] = gcost
+                fcost = gcost + heuristic(i.city, heuristic)
+                q.push(i.city, fcost)
+                path[i.city] = current
+    
+    printPath(start, goal, path, dis)
+</font>
+def printPath(start, goal, path, dis):
+    goalPath = []
+    while path.get(goal) != None:
+        goalPath.append(goal)
+        g = path[goal]
+    goalPath.append(start)
+    for i in goalPath:
+        print(str(goalPath), end="==&gt;")
+    print("Total Cost:", dis[goal])
+
+
+A_Star('Arad', 'Bucharest')
+
+    
+
+
+
+
+
+    
+        
+
+
+
+</pre>
+</body>
+</html>

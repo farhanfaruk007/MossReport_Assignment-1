@@ -1,0 +1,89 @@
+<html>
+<head>
+<title>C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/2/18301108_Lab1_Sec2_-_RIFAT_NUR_EBTASAM.py</title>
+</head>
+<body bgcolor="white">
+<hr/>
+C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/2/18301108_Lab1_Sec2_-_RIFAT_NUR_EBTASAM.py<p></p><pre>
+import heapq
+def create_graph(input_file):
+    graph = {}
+    heuristics = {}
+
+    with open(input_file, 'r') as file:
+        for line in file:
+            parts = line.split()
+            city = parts[0]
+<a name="1"></a><font color="#00FF00"><a href="match178-1.html#1" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_1_15.gif"/></a>
+
+            heuristic = int(parts[1])
+            neighbors = parts[2:]
+
+            heuristics[city] = heuristic
+
+            graph[city] = []
+
+            for i in range(0, len(neighbors), 2):
+                neighbor_city = neighbors[i]
+</font>                weight = int(neighbors[i + 1])
+<a name="2"></a><font color="#0000FF"><a href="match178-1.html#2" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_2_10.gif"/></a>
+
+                graph[city].append((neighbor_city, weight))
+
+    return graph, heuristics
+
+
+def astar(h, gr, g, s):
+    pq = []
+    heapq.heappush(pq, (h[s], 0, s, [s]))
+</font><a name="0"></a><font color="#FF0000"><a href="match178-1.html#0" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_0_23.gif"/></a>
+
+    visited = set()
+
+    while pq:
+
+        f_cost, g_cost, current, path = heapq.heappop(pq)
+
+        if current == g:
+            return path, g_cost
+
+
+        if current in visited:
+            continue
+        visited.add(current)
+
+
+        for neighbor, weight in gr.get(current, []):
+            if neighbor not in visited:
+                new_g_cost = g_cost + weight
+</font>                new_f_cost = new_g_cost + h[neighbor]
+                heapq.heappush(pq, (new_f_cost, new_g_cost, neighbor, path + [neighbor]))
+
+
+    return None, float('inf')
+
+
+input_file = "input file.txt"
+graph, heuristics = create_graph(input_file)
+start = 'Arad'
+goal = 'Bucharest'
+path, cost = astar(heuristics, graph, goal, start)
+if path is None:
+    print('No path found')
+else:
+    print(f"Path: {path}")
+    print(f"Cost: {cost}")
+
+
+
+
+# print("Weighted Graph (Adjacency List):")
+# for city, neighbors in graph.items():
+#     print(f"{city}: {neighbors}")
+
+# print("\nHeuristics Dictionary:")
+# for city, heuristic in heuristics.items():
+#     print(f"{city}: {heuristic}")
+</pre>
+</body>
+</html>

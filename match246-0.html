@@ -1,0 +1,58 @@
+<html>
+<head>
+<title>C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/9/21201128_zannatun_21201128_-_ZANNATUN_TAZREE_TISHA.py</title>
+</head>
+<body bgcolor="white">
+<hr/>
+C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/9/21201128_zannatun_21201128_-_ZANNATUN_TAZREE_TISHA.py<p></p><pre>
+import heapq
+def inpt_func(in_f): 
+    grp={}
+    heu_v={} 
+    with open(in_f, "r") as file:
+        ls=file.readlines()
+        for l in ls:
+            pts=l.strip().split()
+<a name="0"></a><font color="#FF0000"><a href="match246-1.html#0" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_0_25.gif"/></a>
+
+            cty=pts[0]
+            heu_vals = int(pts[1])
+            heu_v[cty] = heu_vals
+            nei_cty = [(pts[i], int(pts[i+1])) for i in range(2, len(pts), 2)]
+            grp[cty] = nei_cty
+    return grp, heu_v
+def a_search(grp, heu_v, sn, gn):  
+    open_set=[]
+    heapq.heappush(open_set, (heu_v[sn], 0, sn, [sn]))  
+</font>    v=set()  
+    while open_set:
+        f, ac, cur_cty, p = heapq.heappop(open_set)
+        if cur_cty in v:
+            continue
+<a name="1"></a><font color="#00FF00"><a href="match246-1.html#1" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_1_12.gif"/></a>
+
+        v.add(cur_cty)
+        if cur_cty == gn:
+            return p, ac 
+        for nei, cost in grp.get(cur_cty, []):
+            if nei not in v:
+                new_ac = ac + cost
+</font>                new_f = new_ac + heu_v[nei]
+                heapq.heappush(open_set, (new_f, new_ac, nei, p + [nei]))
+    return "NO PATH FOUND", None
+
+in_f = "C:\\Users\\checbdo1\\OneDrive\\Desktop\\CSE422 LAB\\A1\\t1input.txt"
+out_f = "C:\\Users\\checbdo1\\OneDrive\\Desktop\\CSE422 LAB\\A1\\t1output.txt"
+grp, heu_v = inpt_func(in_f)
+s_cty = "Arad"
+g_cty = "Bucharest" 
+p, total_distance = a_search(grp, heu_v, s_cty, g_cty)
+
+with open(out_f, "w") as output:
+    if p != "NO PATH FOUND":
+        output.write("Path: " + " -&gt; ".join(p) + "\n")
+        output.write("Total distance: " + str(total_distance) + " km")
+    else:
+        output.write(p + "\n")</pre>
+</body>
+</html>

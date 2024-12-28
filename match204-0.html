@@ -1,0 +1,108 @@
+<html>
+<head>
+<title>C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/13/21301301_Hritick_Kumar_Mitra_CSE422Assignment01_Fall2024_-_HRITICK_KUMAR_MITRA.py</title>
+</head>
+<body bgcolor="white">
+<hr/>
+C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/13/21301301_Hritick_Kumar_Mitra_CSE422Assignment01_Fall2024_-_HRITICK_KUMAR_MITRA.py<p></p><pre>
+import matplotlib.pyplot as plt
+
+def load_map(txt_file):
+    heuristics = {}
+    path = {} 
+    
+    with open(txt_file, 'r') as file:
+        for l1 in file:
+            elem = l1.split()
+            cty = elem[0]
+            h_weight = int(elem[1])
+            heuristics[cty] = h_weight
+            child_lst = elem[2:]
+            path[cty] = {}
+
+            for i in range(0, len(child_lst), 2):
+<a name="1"></a><font color="#00FF00"><a href="match204-1.html#1" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_1_8.gif"/></a>
+
+                n1 = child_lst[i]
+                dist = int(child_lst[i + 1])
+                path[cty][n1] = dist
+
+    return path, heuristics
+
+
+
+
+def a_star(path, heuristics, start, end):
+</font>    open_lst = {start}
+    parent_lst = {}
+
+    lowest_p_cost = {}
+    total_ecost = {}
+    limit = 999999999999
+
+    for cty in path:
+      lowest_p_cost[cty] = limit
+      total_ecost[cty] = limit
+
+
+    lowest_p_cost[start] = 0
+    total_ecost[start] = heuristics[start]
+
+    while open_lst:
+        curr1 = None
+        min_cost = limit
+
+        for cty in open_lst:
+            if total_ecost[cty] &lt; min_cost:
+                min_cost = total_ecost[cty]
+                curr1 = cty
+
+        if curr1 == end:
+            return reconst(parent_lst, curr1), lowest_p_cost[end]
+
+<a name="0"></a><font color="#FF0000"><a href="match204-1.html#0" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_0_15.gif"/></a>
+
+        open_lst.remove(curr1)
+
+        for n1, dist in path[curr1].items():
+            new_cost = lowest_p_cost[curr1] + dist
+
+            if new_cost &lt; lowest_p_cost[n1]:
+                parent_lst[n1] = curr1
+                lowest_p_cost[n1] = new_cost
+                total_ecost[n1] = new_cost + heuristics[n1]
+
+                if n1 not in open_lst:
+</font>                    open_lst.add(n1)
+
+    return None, None
+
+
+
+<a name="2"></a><font color="#0000FF"><a href="match204-1.html#2" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_2_8.gif"/></a>
+
+def reconst(parent_lst, curr1):
+    path = [curr1]
+    while curr1 in parent_lst:
+        curr1 = parent_lst[curr1]
+        path.append(curr1)
+    return path[::-1]
+</font>
+
+
+start = 'Arad'
+end = 'Bucharest'
+path, heuristics = load_map('input.txt')
+path, total_dist = a_star(path, heuristics, start, end)
+
+
+if path:
+    print("Path:", " -&gt; ".join(path))
+    print("Total distance:", total_dist, "km")
+    
+else:
+    print("No path found.")
+
+</pre>
+</body>
+</html>

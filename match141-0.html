@@ -1,0 +1,76 @@
+<html>
+<head>
+<title>C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/16/22301583_Israt_Abdullah_Neha_CSE422_16_Assignment01_Fall2024_-_ISRAT_ABDULLAH_NEHA.py</title>
+</head>
+<body bgcolor="white">
+<hr/>
+C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/16/22301583_Israt_Abdullah_Neha_CSE422_16_Assignment01_Fall2024_-_ISRAT_ABDULLAH_NEHA.py<p></p><pre>
+import heapdict
+
+<a name="0"></a><font color="#FF0000"><a href="match141-1.html#0" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_0_18.gif"/></a>
+
+h_t = {}
+g = {}
+with open("Input.txt") as inp:
+    for l in inp:
+        l = l.strip().split(" ")
+        h_t[l[0]] = int(l[1])
+        temp = {}
+        for i in range(2, len(l), 2):
+            temp[l[i]] = int(l[i + 1])
+</font>        g[l[0]] = temp
+
+def a_star(start, dest, g, h_t):
+    
+    nodes = list(h_t.keys())
+    que = heapdict.heapdict()
+    par_tracker = [None] * len(h_t)
+    par_cost = [float("inf")] * len(h_t)
+
+    start_ind = nodes.index(start)
+<a name="1"></a><font color="#00FF00"><a href="match141-1.html#1" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_1_12.gif"/></a>
+
+    que[start] = h_t[start]
+    par_cost[start_ind] = 0
+
+    while len(que) != 0:
+        n = que.popitem()
+        if n[0] == dest:
+            cur = dest
+            path = [dest]
+</font>            cur_ind = nodes.index(cur)
+            destination_ind = nodes.index(dest)
+
+            while par_tracker[cur_ind] != None:
+                path.insert(0, par_tracker[cur_ind])
+                cur = par_tracker[cur_ind]
+                cur_ind = nodes.index(cur)
+
+            print("Path: " + " -&gt; ".join(path))
+            print("Total distance:", par_cost[destination_ind], "km")
+            return 0
+
+        else: 
+            for child in g[n[0]]:
+                par_ind = nodes.index(n[0])
+                child_ind = nodes.index(child)
+                n_cost = g[n[0]][child]
+<a name="2"></a><font color="#0000FF"><a href="match141-1.html#2" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_2_12.gif"/></a>
+
+                g_cost = par_cost[par_ind] + n_cost
+
+                if g_cost &lt; par_cost[child_ind]:
+                    par_cost[child_ind] = g_cost
+                    par_tracker[child_ind] = n[0]
+                    f_n = g_cost + h_t[child]
+                    que[child] = f_n
+
+    print("NO PATH FOUND")
+</font>    return 1
+
+start = input("Start node: ").capitalize()
+dest = input("Destination: ").capitalize()
+
+a_star(start, dest, g, h_t)</pre>
+</body>
+</html>

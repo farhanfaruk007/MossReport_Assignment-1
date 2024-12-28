@@ -1,0 +1,87 @@
+<html>
+<head>
+<title>C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/17/21201645_-_ABIDA_RAHMAN_CSE422_17_Assignment01_Fall2024.py</title>
+</head>
+<body bgcolor="white">
+<hr/>
+C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/17/21201645_-_ABIDA_RAHMAN_CSE422_17_Assignment01_Fall2024.py<p></p><pre>
+import heapq
+
+
+def read_graph(input_file):
+    graph = {}
+    heuristics = {}
+    with open("/Users/abidarahman/PycharmProjects/pythonProject/422 (final)/input", 'r') as file:
+        for x in file:
+            variable = x.strip().split()
+            Node = variable[0]
+            h = int(variable[1])
+            nxt_nodes = {variable[i]: int(variable[i + 1]) for i in range(2, len(variable), 2)}
+            graph[Node] = nxt_nodes
+            heuristics[Node] = h
+    return graph, heuristics
+
+##The function i.e read_graph(input_file) reads a graph and heuristics
+#It initializes an empty dictionary graph for the adjacency list of nodes
+#following heuristic values
+
+
+def a_star_search(Graph, Heuristics, Start, Goal):
+    mod = []
+    heapq.heappush(mod, (Heuristics[Start], Start))
+    prev = {}
+    g_cost = {Node: float('inf') for Node in Graph}
+    g_cost[Start] = 0
+    f_cost = {Node: float('inf') for Node in Graph}
+    f_cost[Start] = Heuristics[Start]
+
+<a name="1"></a><font color="#00FF00"><a href="match243-1.html#1" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_1_13.gif"/></a>
+
+    while mod:
+        _, Current_Node = heapq.heappop(mod)
+        if Current_Node == Goal:
+            return reconstruct_path(Prev, Current_Node), g_cost[Goal]
+
+        for child, distance in Graph[Current_Node].items():
+            possible_g_cost = g_cost[Current_Node] + distance
+            if possible_g_cost &lt; g_cost[child]:
+</font>                prev[child] = Current_Node
+                g_cost[child] = possible_g_cost
+                f_cost[child] = g_cost[child] + Heuristics[child]
+                heapq.heappush(mod, (f_cost[child], child))
+
+    return None, None
+
+
+<a name="0"></a><font color="#FF0000"><a href="match243-1.html#0" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_0_18.gif"/></a>
+
+def reconstruct_path(Prev, Current_Node):
+    path = []
+    while Current_Node in Prev:
+        path.append(Current_Node)
+        cur = Prev[Current_Node]
+    path.append(Current_Node)
+    return path[::-1]
+
+
+def result():
+    input_file = '/Users/abidarahman/PycharmProjects/pythonProject/422 (final)/1234.py'
+
+    Graph, Heuristics = read_graph(input_file)
+
+    Start_Node = input("Enter the starting city: ")
+    Goal = input("Enter the destination city: ")
+
+    Path, Total_distance = a_star_search(Graph, Heuristics, Start, Goal)
+</font>
+    if Path:
+        print("Optimal path:", " -&gt; ".join(Path))
+        print("Total distance:", Total_distance)
+    else:
+        print("No path found.")
+
+
+result()
+</pre>
+</body>
+</html>

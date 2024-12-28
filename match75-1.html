@@ -1,0 +1,68 @@
+<html>
+<head>
+<title>C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/3/22101610_Priota_das_CSE422_03_Lab_Assignment01_Fall2024._-_PRIOTA_DAS.py</title>
+</head>
+<body bgcolor="white">
+<hr/>
+C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/4/22101229_Aparup_Chowdhury_CSE422_04_Assignment01_Fall2024_-_APARUP_CHOWDHURY.py<p></p><pre>
+
+import heapq
+
+graph = {}
+heuristic_vals = {}
+
+def heuristic_update(info):
+    heuristic_vals[info[0]] = int(info[1])
+
+<a name="0"></a><font color="#FF0000"><a href="match75-0.html#0" target="0"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_0_58.gif"/></a>
+
+def create_graph(allinfo):
+    parent = allinfo[0]
+    graph[parent] = {}
+    for i in range(2, len(allinfo), 2):
+        leaf_node = allinfo[i]
+        weight = int(allinfo[i + 1])
+        graph[parent][leaf_node] = weight
+
+def A_star_Algo(source, dest):
+    heap_q = []
+    heapq.heappush(heap_q, (int(heuristic_vals[source]), 0, source, [source]))
+    visited = []
+    while heap_q:
+        _, weight, city, path = heapq.heappop(heap_q)
+        if city in visited:
+            continue
+        visited.append(city)
+        if city == dest:
+            return weight, path
+        for leaf, cost in graph[city].items():
+            total_weight = weight + cost
+            p_value = total_weight + heuristic_vals[leaf]
+            heapq.heappush(heap_q, (p_value, total_weight, leaf, path + [leaf]))
+</font>    return None
+
+with open('input.txt') as file:
+<a name="1"></a><font color="#00FF00"><a href="match75-0.html#1" target="0"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_1_22.gif"/></a>
+
+    n = file.readlines()
+    #print(n)
+    for i in n:
+        infos = i.split()
+        #print(infos)
+        heuristic_update(infos)
+        create_graph(infos)
+
+start = input("Start Node : ")
+end = input("Destination : ")
+algo = A_star_Algo(start, end)
+out = open('output.txt', "w")
+
+if algo:
+    print(f"\nPath: {' -&gt; '.join(algo[1])}")
+    print(f"Total distance: {algo[0]} km")
+    out.write(f"Path: {' -&gt; '.join(algo[1])}\nTotal Distance: {algo[0]}km")
+</font>else:
+    print("NO PATH FOUND")
+</pre>
+</body>
+</html>

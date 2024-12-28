@@ -1,0 +1,113 @@
+<html>
+<head>
+<title>C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/6/20301309_wasifahaque_cse422_06_assignment01_fall2024_-_WASIFA_HAQUE.py</title>
+</head>
+<body bgcolor="white">
+<hr/>
+C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/13/21301429_MD_EAMIN_CSE422_Assignment01_Fall2024_-_MD._EAMIN.py<p></p><pre>
+inputf =open("input.txt", "r")
+
+inp_lines = inputf.readlines()
+
+H_values={}
+G_dict={}
+
+
+def checkeDict(i):
+    if i in G_dict:
+        return G_dict[i]
+    else:
+        return None
+    
+    
+<a name="1"></a><font color="#00FF00"><a href="match67-0.html#1" target="0"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_1_6.gif"/></a>
+
+for i in range(len(inp_lines)):
+    inp_lines[i]=inp_lines[i][:len(inp_lines[i])-1]
+
+def AstarSearch(st_node,end_node):
+</font>    v_nodes =set()
+    n_nodes =set()
+    v_nodes.add(st_node)
+
+<a name="0"></a><font color="#FF0000"><a href="match67-0.html#0" target="0"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_0_42.gif"/></a>
+
+    dict_map ={}
+    total_cost ={}
+    total_cost[st_node]=0
+    dict_map[st_node]=st_node
+
+
+    while len(v_nodes)&gt;0:
+        x= None
+
+        for i in v_nodes:
+            if x is None or total_cost[i]+H_values[i]&lt;total_cost[x]+H_values[x]:
+                x=i
+
+        if x==end_node or G_dict[x]==None:
+            pass
+
+        else:
+            for (next_node, c) in checkeDict(x):
+                if next_node not in v_nodes and next_node not in n_nodes:
+                    v_nodes.add(next_node)
+                    dict_map[next_node]=x
+                    total_cost[next_node]=total_cost[x]+c
+                    p_distance=total_cost[next_node]
+
+                else:
+                    if total_cost[next_node]&gt;total_cost[x]+c:
+                        total_cost[next_node]=total_cost[x]+c
+                        dict_map[next_node]=x
+
+                        if next_node in n_nodes:
+                            n_nodes.remove(next_node)
+                            v_nodes.add(next_node)
+                        p_distance=total_cost[next_node]
+</font>
+        if x==None:
+            print('No path found')
+            return None
+    
+        if x==end_node:
+            temp_list=[]
+
+            while dict_map[x]!=x:
+                temp_list.append(x)
+                x=dict_map[x]
+
+            temp_list.append(st_node)
+            temp_list.reverse()
+
+            # print(temp_list)
+            # return p_distance
+            print(*temp_list, sep=" -&gt; ")
+            print("Total_distance:", p_distance, "km")
+            return p_distance
+        v_nodes.remove(x)
+        n_nodes.add(x)
+
+    print('No path found') 
+    return None
+
+        
+for i in inp_lines:
+    values = i.split()
+    H_values[values[0]]=int(values[1])
+    x=values[2:]
+    y=[]
+
+    for j in range(0,len(x)-1,2):
+        y.append((x[j],int(x[j+1])))
+    G_dict[values[0]]=y
+
+
+
+H = list(H_values)
+st_node = input("Start node: ")
+destination_node = input("Destination: ")
+AstarSearch(st_node, destination_node)
+</pre>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<html>
+<head>
+<title>C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/8/22101365_a_star_search_-_MAJEDUL_ISLAM.py</title>
+</head>
+<body bgcolor="white">
+<hr/>
+C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/18/22101883_Md.MehediHasanSohag_CSE422_18_Assignment01_Fall2024_-_MD._MEHEDI_HASAN_SOHAG.py<p></p><pre>
+<a name="1"></a><font color="#00FF00"><a href="match193-0.html#1" target="0"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_1_12.gif"/></a>
+
+import heapq
+class Graph:
+    def __init__(self):
+        self.edge = {}
+        self.heuristics = {}
+    def add_edges(self, u, v, distance):
+        if u not in self.edge:
+            self.edge[u] = []
+</font><a name="0"></a><font color="#FF0000"><a href="match193-0.html#0" target="0"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_0_17.gif"/></a>
+
+        self.edge[u].append((v, distance))
+    def set_heuristic_value(self, city, value):
+        self.heuristics[city] = value
+    def get_new_neighbor(self, city):
+        return self.edge.get(city, [])
+    def get_heuristic_value(self, city):
+        return self.heuristics.get(city, float('inf'))
+
+def a_star(graph, start, goal):
+</font>    first_list = []
+    check_list = []
+    heapq.heappush(first_list, (graph.get_heuristic_value(start), 0, start,[]))
+    
+    
+    while(True):
+        if not first_list:
+            break
+        approximate, total_distance, current_city, path = heapq.heappop(first_list)
+        if current_city in check_list:
+            continue
+        path = path + [current_city]
+        if current_city == goal:
+            return total_distance, path
+        check_list.append(current_city)
+        for city, distance in graph.get_new_neighbor(current_city):
+            if city in check_list:
+                continue
+            new_total_distance = total_distance + distance
+            heuristic_distance = graph.get_heuristic_value(city)
+            approximate_distance = new_total_distance + heuristic_distance
+            heapq.heappush(first_list, (approximate_distance, new_total_distance, city, path))
+    return None, []
+
+graph = Graph()
+input_file = open('Input file.txt', 'r')
+<a name="2"></a><font color="#0000FF"><a href="match193-0.html#2" target="0"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_2_8.gif"/></a>
+
+for row in input_file:
+        input_data = row.split()
+        city = input_data[0]
+        heuristic_value = int(input_data[1])
+        graph.set_heuristic_value(city, heuristic_value)
+        for i in range(2, len(input_data), 2):
+</font>            neighbor = input_data[i]
+            heuristic_distance = int(input_data[i+1])
+            graph.add_edges(city, neighbor, heuristic_distance)
+
+start = input("Start node: ")
+goal = input("Destination: ")
+distance, path = a_star(graph, start, goal)
+if path:
+    print(f"Path: {' -&gt; '.join(path)}")
+    print(f"Total distance: {distance} km")
+else:
+    print("NO PATH FOUND")</pre>
+</body>
+</html>

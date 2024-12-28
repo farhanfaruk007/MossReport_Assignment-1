@@ -1,0 +1,94 @@
+<html>
+<head>
+<title>C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/7/22101802_AhnafWarid_CSE422_07_Assignment01_Fall2024_-_AHNAF_WARID.py</title>
+</head>
+<body bgcolor="white">
+<hr/>
+C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/7/22101802_AhnafWarid_CSE422_07_Assignment01_Fall2024_-_AHNAF_WARID.py<p></p><pre>
+import heapq
+
+# Load graph data from file
+def load_graph(filename):
+    graph = {}
+    heuristics = {}
+
+    with open(filename, 'r') as file:
+        for line in file:
+            parts = line.strip().split()
+            city = parts[0]
+            heuristic = int(parts[1])
+            heuristics[city] = heuristic
+            neighbors = {}
+
+            for i in range(2, len(parts), 2):
+                neighbor = parts[i]
+                distance = int(parts[i + 1])
+                neighbors[neighbor] = distance
+
+<a name="0"></a><font color="#FF0000"><a href="match198-1.html#0" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_0_14.gif"/></a>
+
+            graph[city] = neighbors
+
+    return graph, heuristics
+
+# A* search algorithm
+def a_star_search(graph, heuristics, start, goal):
+    sets = []
+    heapq.heappush(sets, (0, start))
+    parentN = {}
+    gSC = {node: float('inf') for node in graph}
+    gSC[start] = 0
+    fSC = {node: float('inf') for node in graph}
+</font>    fSC[start] = heuristics[start]
+
+    while sets:
+        current = heapq.heappop(sets)[1]
+
+<a name="1"></a><font color="#00FF00"><a href="match198-1.html#1" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_1_9.gif"/></a>
+
+        if current == goal:
+            return reconstruct_path(parentN, current), gSC[goal]
+
+        for neighbor, distance in graph[current].items():
+            tentative_gSC = gSC[current] + distance
+
+            if tentative_gSC &lt; gSC[neighbor]:
+</font><a name="2"></a><font color="#0000FF"><a href="match198-1.html#2" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_2_9.gif"/></a>
+
+                parentN[neighbor] = current
+                gSC[neighbor] = tentative_gSC
+                fSC[neighbor] = gSC[neighbor] + heuristics[neighbor]
+                heapq.heappush(sets, (fSC[neighbor], neighbor))
+
+    return None, None
+</font>
+# Reconstruct path from start to goal
+def reconstruct_path(parentN, current):
+    path = []
+    while current in parentN:
+        path.append(current)
+        current = parentN[current]
+    path.append(current)
+    path.reverse()
+    return path
+
+# Main function
+def main():
+    filename = input("Enter the filename: ")
+    graph, heuristics = load_graph(filename)
+
+    startNode = input("Start node: ")
+    goalNode = input("Destination: ")
+
+    path, total_distance = a_star_search(graph, heuristics, startNode, goalNode)
+
+    if path:
+        print("Path:", " -&gt; ".join(path))
+        print("Total distance:", total_distance, "km")
+    else:
+        print("NO PATH FOUND")
+
+if __name__ == "__main__":
+    main()</pre>
+</body>
+</html>

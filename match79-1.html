@@ -1,0 +1,73 @@
+<html>
+<head>
+<title>C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/2/24141112_Lab1_Sec2.py_-_MD._AZMAIN_ADIB.py</title>
+</head>
+<body bgcolor="white">
+<hr/>
+C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/5/20101557_Lab1_Sec5_-_MOHAMMOD_TAREQ_AZIZ.py<p></p><pre>
+import heapq
+
+<a name="0"></a><font color="#FF0000"><a href="match79-0.html#0" target="0"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_0_38.gif"/></a>
+
+def aStarAlgo(sPoint, ePoint, graph, heuristic):
+    fringe = []
+    heapq.heapify(fringe)
+    heapq.heappush(fringe, (0, sPoint))
+    path = {}
+    path[sPoint] = None
+    distance = {}
+    distance[sPoint] = 0
+    while fringe:
+        cNode = heapq.heappop(fringe)[1]
+        if cNode == ePoint:
+            break
+        for i in graph[cNode]:
+            temp = distance[cNode] + int(graph[cNode][i])
+            if i not in distance or temp &lt; distance[i]:
+                distance[i] = temp
+                totalDistance = int(heuristic[i]) + temp
+                heapq.heappush(fringe, (totalDistance, i))
+                path[i] = cNode
+    return path, distance
+</font>
+def printPath(sPoint, ePoint):
+<a name="1"></a><font color="#00FF00"><a href="match79-0.html#1" target="0"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_1_20.gif"/></a>
+
+    if (sPoint and ePoint in heuristic):
+        path, distance = aStarAlgo(sPoint, ePoint, graph, heuristic)    
+        actualPath = [ePoint]
+        child = ePoint
+        while child != sPoint:
+            parent = path[child]
+            actualPath.append(parent)
+            child = parent
+        if len(actualPath) == 0:
+            print("NO PATH FOUND!")
+        else:
+            actualPath.reverse()
+            printAns = " -&gt; ".join(actualPath)
+            print(f"Path: {printAns} \nTotal distance: {distance[ePoint]} km")
+</font>    else:
+        print("NO PATH FOUND!")
+
+inputData = open("input.txt", "r")
+graph = {}
+heuristic = {}
+currNode = inputData.readline().strip()
+
+while currNode != "":
+    cNodeList = currNode.split(" ")
+    for i in range(0, len(cNodeList), +2):
+        if i == 0:
+            heuristic[cNodeList[0]] = int(cNodeList[1])
+            graph[cNodeList[0]] = {}
+        else:
+            graph[cNodeList[0]][cNodeList[i]] = int(cNodeList[i+1])
+    currNode = inputData.readline().strip()
+
+sPoint = input("Starting Point: ")
+ePoint = input("Destination Point: ")
+
+printPath(sPoint, ePoint)</pre>
+</body>
+</html>

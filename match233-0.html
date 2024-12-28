@@ -1,0 +1,127 @@
+<html>
+<head>
+<title>C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/1/22101061_Abdur_Rahman_Arafat_CSE422_01_Assignment01_Fall2024_-_Abdur_Rahman_Arafat.py</title>
+</head>
+<body bgcolor="white">
+<hr/>
+C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/1/22101061_Abdur_Rahman_Arafat_CSE422_01_Assignment01_Fall2024_-_Abdur_Rahman_Arafat.py<p></p><pre>
+class GRAPH:
+    def __init__(self):
+        self.adjacency_List = {}
+        #dictionary
+
+
+    def add_edges(self, first_node, second_node, dist=0):
+        if first_node not in self.adjacency_List:
+            self.adjacency_List[first_node] = []
+
+        if second_node not in self.adjacency_List:
+<a name="0"></a><font color="#FF0000"><a href="match233-1.html#0" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_0_21.gif"/></a>
+
+            self.adjacency_List[second_node] = []
+
+
+        if (first_node, dist) not in self.adjacency_List[second_node]:
+            self.adjacency_List[second_node] += [(first_node, dist)]
+
+        if (second_node, dist) not in self.adjacency_List[first_node]:
+            self.adjacency_List[first_node] += [(second_node, dist)]
+
+    def getNeighbors(self, node):
+
+        return self.adjacency_List[node] if node in self.adjacency_List else "&lt;!Node not Found!&gt;"
+
+    def get_graph(self):
+        return self.adjacency_List
+
+
+def heuristic(node, heuristic_List) -&gt; int:
+
+    for n, h_value in heuristic_List:
+        if n == node:
+            return h_value
+    return 0
+</font>
+
+def a_star_search(graph, start, goal, heuristicList):
+    not_visited = [(0, start)]
+    visited = set()
+    cost = {start: 0}
+    parent = {}
+
+    while not_visited:
+
+        not_visited.sort(key=lambda x: x[0])  # Sort by cost
+        gg, current = not_visited.pop(0)
+
+        if current == goal:
+
+            path = []
+            total_cost = cost[current]
+            while current in parent:
+                path.append(current)
+                current = parent[current]
+            path.append(start)
+
+            return list(reversed(path)), total_cost  # Path and cost
+
+        visited.add(current)
+
+        for neighbor, neighborCost in graph.getNeighbors(current):
+            tentative_cost = cost[current] + neighborCost
+
+            if neighbor in visited or tentative_cost &gt;= cost.get(neighbor, float('inf')):
+                continue
+
+            if tentative_cost &lt; cost.get(neighbor, float('inf')):
+                parent[neighbor] = current
+                cost[neighbor] = tentative_cost
+                total_Cost = tentative_cost + heuristic(neighbor, heuristicList)
+                not_visited.append((total_Cost, neighbor))
+
+    return None, 0  # No path found
+
+
+def get_input(filename):
+    with open(filename, 'r') as f:
+        return f.readlines()
+
+
+if __name__ == '__main__':
+    node_input = get_input(r"K:\CSE422\CSE422_code\input_file.txt")
+    graph = GRAPH()
+    heuristic_List = []
+
+    for node_Info in node_input:
+        node_Info = node_Info.split(' ')
+        nodeList = []
+        for i in range(0, len(node_Info), 2):
+            node = node_Info[i]
+            distance = int(node_Info[i + 1].rstrip())
+            nodeList.append((node, distance))
+
+        node = nodeList[0][0]
+        heurustic_value = nodeList[0][1]
+        heuristic_List.append((node, heurustic_value))
+        neighbors = nodeList[1:]#except first node which would be root node
+
+
+        for neighbor in neighbors:
+            dist = neighbor[1]
+            graph.add_edges(node, neighbor[0], dist)
+
+
+    start = input("Start: ")
+    goal = input("Goal: ")
+
+    path, total_cost = a_star_search(graph, start, goal, heuristic_List)
+
+    if path:
+        output_string = ' -&gt; '.join(path)
+        print(f"Path found: {output_string}")
+        print(f"Total Distance: {total_cost} km")
+    else:
+        print("No Path Found")
+</pre>
+</body>
+</html>

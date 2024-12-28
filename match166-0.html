@@ -1,0 +1,82 @@
+<html>
+<head>
+<title>C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/2/22299241_lab01_Sec02_-_TASNIA_AHMED_CHOWDHURY.py</title>
+</head>
+<body bgcolor="white">
+<hr/>
+C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/2/22299241_lab01_Sec02_-_TASNIA_AHMED_CHOWDHURY.py<p></p><pre>
+f1=open('input1.txt','r')
+
+
+graph_distance={}
+
+for i in f1:
+    m1=i.split()
+    k=(m1[0],int(m1[1]))
+    v=[(m1[j],int(m1[j+1])) for j in range(2,len(m1),2)]
+    graph_distance[k]=v
+
+#print(graph_distance)
+
+heu={}
+for i in graph_distance.keys():
+    heu[i[0]]=i[1]
+
+def get_neighbour(p):
+    if p in graph_distance:
+        return graph_distance[p]
+    else:
+        return None
+    
+def astarsearch(start,stop):
+    op_se=set(start)
+    cl_se=set()
+<a name="0"></a><font color="#FF0000"><a href="match166-1.html#0" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_0_30.gif"/></a>
+
+    d={}
+    parent={}
+    d[start]=0
+    parent[start]=start
+    while len(op_se)&gt;0:
+        n1=None
+        for x in op_se:
+            if n1==None or d[x]+heu[x]&lt;d[n1]+heu[n1]:
+                n1=x
+        if n1==stop or graph_distance[n1]==None:
+            pass
+        else:
+            for (m,weigh) in get_neighbour(n1):
+                if m not in op_se and m not in cl_se:
+                    op_se.add(m)
+                    parent[m]=n1
+</font>                    d[m]=d[n1]+weigh
+                else:
+                    if d[m]&gt;d[n1]+weigh:
+                        d[m]=d[n1]+weigh
+                        parent[m]=n1
+                        if m in cl_se:
+                            cl_se.remove(m)
+                            op_se.add(m)
+<a name="1"></a><font color="#00FF00"><a href="match166-1.html#1" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_1_7.gif"/></a>
+
+        if n1==None:
+            print('No Path Found')
+            return None
+        if n1==stop:
+            path=[]
+            while parent[n1]!=n1:
+                path.append(n1)
+</font>                n1=parent[n1]
+            path.append(start)
+            path.reverse()
+            print('Path: {}'.format(path))
+            return path
+        op_se.remove(n1)
+        cl_se.add(n1)
+
+    print('No Path Found')
+    return None
+
+astarsearch('Arad','Bucharest')</pre>
+</body>
+</html>

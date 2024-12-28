@@ -1,0 +1,87 @@
+<html>
+<head>
+<title>C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/2/21301543_Lab1_Sec2_-_REDWANUR_RAHMAN.py</title>
+</head>
+<body bgcolor="white">
+<hr/>
+C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/2/21301543_Lab1_Sec2_-_REDWANUR_RAHMAN.py<p></p><pre>
+import heapq
+
+romania_map = { "Arad" : [("Zerind", 75), ("Sibiu", 140), ("Timisoara", 118)],
+                "Zerind" : [("Arad", 75), ("Oradea", 71)],
+                "Timisoara" : [("Arad", 118), ("Lugoj", 111)],
+                "Sibiu" : [("Arad", 140), ("Oradea", 151), ("Fagaras", 99), ("Rimnicu Vilcea", 80)],
+                "Oradea" : [("Zerind", 71), ("Sibiu", 151)],
+                "Fagaras" : [("Sibiu", 99), ("Bucharest", 211)],
+                "Rimnicu Vilcea" : [("Sibiu", 80), ("Pitesti", 97), ("Craiova", 146)],
+                "Lugoj" : [("Timisoara", 111), ("Mehadia", 70)],
+                "Mehadia" : [("Lugoj", 70), ("Drobeta", 75)],
+                "Drobeta" : [("Mehadia", 75), ("Craiova", 120)],
+                "Craiova" : [("Drobeta", 120), ("Rimnicu Vilcea", 146), ("Pitesti", 138)],
+                "Pitesti" : [("Rimnicu Vilcea", 97), ("Craiova", 138), ("Bucharest", 101)],
+                "Bucharest" : [("Fagaras", 211), ("Pitesti", 101), ("Giurgiu", 90), ("Urziceni", 85)],
+                "Giurgiu" : [("Bucharest", 90)],
+                "Urziceni" : [("Bucharest", 85), ("Hirsova", 98), ("Vaslui", 142)],
+                "Hirsova" : [("Urziceni", 98), ("Eforie", 86)],
+                "Eforie" : [("Hirsova", 86)],
+                "Vaslui" : [("Urziceni", 142), ("Iasi", 92)],
+                "Iasi" : [("Vaslui", 92), ("Neamt", 87)],
+                "Neamt" : [("Iasi", 87)]
+              }
+
+strt_ld = { "Arad": 366, "Zerind": 374, "Oradea": 380, "Sibiu": 253, "Timisoara": 329,
+            "Lugoj": 244, "Mehadia": 241, "Drobeta": 242, "Craiova": 160, "Rimnicu Vilcea": 193,
+            "Pitesti": 98, "Fagaras": 178, "Bucharest": 0, "Giurgiu": 77, "Urziceni": 80,
+            "Hirsova": 151, "Eforie": 161, "Vaslui": 199, "Iasi": 226, "Neamt": 234
+          }
+
+
+def a_st_sr(intl, goal) :
+<a name="0"></a><font color="#FF0000"><a href="match223-1.html#0" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_0_13.gif"/></a>
+
+    exp_list = []
+    heapq.heappush(exp_list, (0, intl))
+    p_list = {}
+    g_score = {city : float('inf') for city in romania_map}
+    g_score[intl] = 0
+    f_score = {city : float('inf') for city in romania_map}
+    f_score[intl] = strt_ld[intl]
+    while exp_list :
+        current = heapq.heappop(exp_list)[1]
+        if current == goal :
+</font>            path = recons_path(p_list, current)
+            return path, g_score[goal]
+        for nbr, cost in romania_map[current] :
+            apprx_g_score = g_score[current] + cost
+            if apprx_g_score &lt; g_score[nbr] :
+<a name="1"></a><font color="#00FF00"><a href="match223-1.html#1" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_1_8.gif"/></a>
+
+                p_list[nbr] = current
+                g_score[nbr] = apprx_g_score
+                f_score[nbr] = g_score[nbr] + strt_ld[nbr]
+                heapq.heappush(exp_list, (f_score[nbr], nbr))
+    return None, None
+
+
+def recons_path(p_list, current) :
+    path = [current]
+</font>    while current in p_list :
+        current = p_list[current]
+        path.append(current)
+    path.reverse()
+    return path
+
+
+start_city = input("Start node : ")
+goal_city = input("Destination : ")
+if start_city not in romania_map or goal_city not in romania_map :
+    print("NO PATH FOUND")
+best_path, total_cost = a_st_sr(start_city, goal_city)
+if best_path :
+    print(f"Path: {" -&gt; ".join(best_path)}")
+    print("Total distance:", total_cost, "km")
+else:
+    print("NO PATH FOUND")
+</pre>
+</body>
+</html>

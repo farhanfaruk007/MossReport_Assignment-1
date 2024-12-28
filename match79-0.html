@@ -1,0 +1,68 @@
+<html>
+<head>
+<title>C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/2/24141112_Lab1_Sec2.py_-_MD._AZMAIN_ADIB.py</title>
+</head>
+<body bgcolor="white">
+<hr/>
+C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/2/24141112_Lab1_Sec2.py_-_MD._AZMAIN_ADIB.py<p></p><pre>
+import heapq
+
+def extract(data):
+    heu = {}
+    adj = {}
+    for i in data:
+        city = i.split()
+        heu[city[0]] = city[1]
+        adj[city[0]] = {}
+        for j in range(2, len(city), 2):
+            adj[city[0]][city[j]] = city[j + 1]
+    return heu, adj
+
+<a name="0"></a><font color="#FF0000"><a href="match79-1.html#0" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_0_40.gif"/></a>
+
+def AStar(source, dest, heuristic, adj):
+    fringe = []
+    heapq.heapify(fringe)
+    heapq.heappush(fringe, (0, source))
+    parent = {}
+    parent[source] = None
+    dist = {}
+    dist[source] = 0
+    while fringe:
+        curr = heapq.heappop(fringe)[1]
+        if curr == dest:
+            break
+        for city in adj[curr]:
+            temp = dist[curr] + int(adj[curr][city])
+            if city not in dist or temp &lt; dist[city]:
+                dist[city] = temp
+                tot_dist = int(heuristic[city]) + temp
+                heapq.heappush(fringe, (tot_dist, city))
+                parent[city] = curr
+    return parent, dist
+</font>
+data = open('input.txt', 'r')
+heuristic, adj = extract(data)
+source = input("Start Node: ")
+dest = input("Destination: ")
+<a name="1"></a><font color="#00FF00"><a href="match79-1.html#1" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_1_20.gif"/></a>
+
+if (source and dest in heuristic):
+    path, distance = AStar(source, dest, heuristic, adj)    
+    actual_path = [dest]
+    child = dest
+    while child != source:
+        parent = path[child]
+        actual_path.append(parent)
+        child = parent
+    if len(actual_path) == 0:
+        print('NO PATH FOUND')
+    else:
+        actual_path.reverse()
+        ans = ' --&gt; '.join(actual_path)
+        print(f'''Path: {ans}
+</font>Total distance: {distance[dest]} km''')
+else:
+    print('NO PATH FOUND')</pre>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<html>
+<head>
+<title>C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/14/22101487_CSE422_14_LabAssignment1_-_MD._REDWAN_ISLAM.py</title>
+</head>
+<body bgcolor="white">
+<hr/>
+C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/14/22101487_CSE422_14_LabAssignment1_-_MD._REDWAN_ISLAM.py<p></p><pre>
+import heapq
+
+inputFile= open("input file.txt","r")
+# print(inputFile.read())
+
+
+# -&gt; To find the heuristic values:
+def heuristicValues(value):
+
+    heuristic={}
+
+    for i in value:
+    
+        lines=i.strip().split()
+
+        heuristic[lines[0]]= int(lines[1])
+    return heuristic
+    
+heuristic=heuristicValues(inputFile)
+# print(heuristic)
+
+# -&gt; Finding the parent and childs:
+
+parent={}
+childs={}
+
+inputFile= open("input file.txt","r")
+
+for i in inputFile:
+    lines=i.strip().split()
+ 
+
+    for j in range(2,len(lines),2):
+        # print(j)
+        childs[lines[j]]= int(lines[j+1])
+
+    parent[lines[0]]= childs
+    childs= {}
+# print(parent)
+
+
+def Astar(start,goal,parent,heuristic):
+    heap=[]
+    heapq.heappush(heap,(0,start))
+
+    startNode={}
+    cost={}
+
+    startNode[start]= None
+    cost[start]= 0
+
+    while heap:
+        currentValue= heapq.heappop(heap)[1]
+
+        if currentValue == goal:
+            break
+
+        for neighbour in parent[currentValue]:
+            funG= cost[currentValue]+ parent[currentValue][neighbour]
+
+            if neighbour not in cost or funG&lt; cost[neighbour]:
+                cost[neighbour]= funG
+
+<a name="0"></a><font color="#FF0000"><a href="match230-1.html#0" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_0_20.gif"/></a>
+
+                funF= funG+heuristic[neighbour]
+                heapq.heappush(heap,(funF,neighbour))
+
+                startNode[neighbour]= currentValue
+    return startNode, cost
+
+
+def print_output(parent, cost):
+    path = []
+    path.append(goal)
+    target = goal
+
+    while target != start:
+        target = parent[target]
+        path.append(target)
+
+    path.reverse()
+    
+
+    if len(path) == 0:
+        print("NO PATH FOUND")
+    else:       
+        print("Path: " + " -&gt; ".join(path))  
+</font><a name="1"></a><font color="#00FF00"><a href="match230-1.html#1" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_1_12.gif"/></a>
+
+        print("Total distance: ", end = '')
+        print(cost[goal], "km")
+
+start = input("Start node: ")
+goal = input("Destination: ")
+
+if start and goal not in heuristic:
+    print("Start or goal does not found.")
+else:
+    parent, cost = Astar(start, goal, parent, heuristic)
+  
+    print_output(parent, cost)
+</font>
+
+
+
+
+
+
+</pre>
+</body>
+</html>

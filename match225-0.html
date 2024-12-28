@@ -1,0 +1,121 @@
+<html>
+<head>
+<title>C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/2/18301005_Lab1_Sec2_-_BURHAN_ADIN.py</title>
+</head>
+<body bgcolor="white">
+<hr/>
+C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/2/18301005_Lab1_Sec2_-_BURHAN_ADIN.py<p></p><pre>
+import heapq
+
+
+class GRAPH:
+    def __init__(self):
+        self.adjacencyList = {}
+
+    def addEdges(self, firstNode, secondNode, dist=0):
+        if firstNode not in self.adjacencyList:
+            self.adjacencyList[firstNode] = []
+
+        if secondNode not in self.adjacencyList:
+<a name="0"></a><font color="#FF0000"><a href="match225-1.html#0" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_0_23.gif"/></a>
+
+            self.adjacencyList[secondNode] = []
+
+        if (firstNode, dist) not in self.adjacencyList[secondNode]:
+            self.adjacencyList[secondNode] += [(firstNode, dist)]
+
+        if (secondNode, dist) not in self.adjacencyList[firstNode]:
+            self.adjacencyList[firstNode] += [(secondNode, dist)]
+
+    def getNeighbors(self, node):
+        # Return the neighbors if the node is present in the graph
+        return self.adjacencyList[node] if node in self.adjacencyList else "&lt;!Node not Found!&gt;"
+
+    def getGraph(self):
+        return self.adjacencyList
+
+
+def heuristic(node, heuristicList) -&gt; int:
+    # Retrieve the Heuristic Values from HeuristicList for any node
+    for n, hval in heuristicList:
+        if n == node:
+            return hval
+
+    return 0  # Default value
+</font>
+
+def aStarSearch(graph, start, goal, heuristicList):
+    notVisited = [(0, start)]  # Priority queue of nodes to explore
+    visited = set()  # Set of visited nodes
+    cost = {start: 0}  # Cost from start node to current node
+    parent = {}  # Parent nodes for path reconstruction
+
+    while notVisited:
+        _, current = heapq.heappop(notVisited)
+
+        if current == goal:
+            # Path found, reconstruct and return it with cost/distance
+            path = []
+            total_cost = cost[current]
+            while current in parent:
+                path.append(current)
+                current = parent[current]
+            path.append(start)
+
+            return list(reversed(path)), total_cost  # Path and Cost
+
+        visited.add(current)
+
+        for neighbor, neighborCost in graph.getNeighbors(current):
+            tentative_cost = cost[current] + neighborCost
+
+            if neighbor in visited or tentative_cost &gt;= cost.get(neighbor, float('inf')):
+                continue
+
+            if tentative_cost &lt; cost.get(neighbor, float('inf')):
+                parent[neighbor] = current
+                cost[neighbor] = tentative_cost
+                totalCost = tentative_cost + heuristic(neighbor, heuristicList)
+                heapq.heappush(notVisited, (totalCost, neighbor))
+
+    return None, 0  # No path found
+
+
+def getInput(filename):
+    with open(filename, 'r') as f:
+        return f.readlines()
+
+
+if __name__ == '__main__':
+    # Read the input from the local file
+    input_file = "input file.txt"  # Replace with the correct file path
+    nodeInputs = getInput(input_file)
+    graph = GRAPH()
+    heuristicList = []
+
+    for nodeInfo in nodeInputs:
+        nodeInfo = nodeInfo.split()
+        node = nodeInfo[0]
+        hval = int(nodeInfo[1])
+        heuristicList.append((node, hval))
+        neighbors = [(nodeInfo[i], int(nodeInfo[i + 1])) for i in range(2, len(nodeInfo), 2)]
+
+        for neighbor in neighbors:
+            dist = neighbor[1]
+            graph.addEdges(node, neighbor[0], dist)
+
+    # User inputs for start and goal
+    start = input("Start: ")
+    goal = input("Goal: ")
+
+    path, total_cost = aStarSearch(graph, start, goal, heuristicList)
+
+    if path:
+        pathString = ' -&gt; '.join(path)
+        print(f"Path found: {pathString}")
+        print(f"Total Distance: {total_cost} km")
+    else:
+        print("No Path Found.")
+</pre>
+</body>
+</html>

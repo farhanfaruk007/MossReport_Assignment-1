@@ -1,0 +1,105 @@
+<html>
+<head>
+<title>C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/12/22101021_Jishnu_Kumar_Bachhar_CSE422_12_Assignment01_Fall2024_-_JISHNU_KUMAR_BACHHAR.py</title>
+</head>
+<body bgcolor="white">
+<hr/>
+C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/16/21201822_cse422_16_labassignment1_-_MD._HABIBUR_RAHMAN.py<p></p><pre>
+import heapq as hq
+<a name="0"></a><font color="#FF0000"><a href="match196-0.html#0" target="0"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_0_16.gif"/></a>
+
+class PQueue:
+  def __init__(self):
+    self.cities= []
+  def push(self, city, cost):
+    hq.heappush(self.cities,(cost,city))
+  def pop(self):
+    return hq.heappop(self.cities)[1]
+  def isEmpty(self):
+    if (self.cities==[]):
+      return True
+    else:
+      return False
+  def check(self):
+    print(self.cities)
+</font>
+
+def MAP():
+  city_map = {}
+  heu_map = {}
+  with open("Input.txt", "r") as city_info:
+    for i in city_info:
+      line= i.strip()
+      if not line:
+        continue
+      liness= line.split()
+      if len(liness) &lt; 2:
+        continue
+      city = liness[0]
+      h_distance = liness[1]
+
+      if city not in city_map:
+        city_map[city] = {}
+
+      if city not in heu_map:
+        heu_map[city] = h_distance
+
+      for j in range(1, len(liness), 2):
+        if j+1&gt;= len(liness):
+          continue
+        else:
+          distance = int(liness[j+2])
+          neighbor = liness[j+1]
+
+          city_map[city][neighbor] = distance
+
+  return city_map, heu_map
+
+def Astar(start,end):
+  path = {}
+  distance = {}
+  q= PQueue()
+  romania_city = MAP()[0]
+  heu_value = MAP()[1]
+<a name="1"></a><font color="#00FF00"><a href="match196-0.html#1" target="0"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_1_12.gif"/></a>
+
+  q.push(start,0)
+  distance [start] = 0
+  path [start] = None
+  while (q.isEmpty() == False):
+    current = q. pop()
+    if (current == end ):
+      break
+
+    for new_city in romania_city[current]:
+
+      g_cost =  distance[current] + romania_city[current][new_city]
+</font>      if (new_city not in distance or g_cost &lt; distance[new_city]):
+        distance[new_city] = g_cost
+        f_cost = g_cost + int(heu_value[new_city])
+        q.push (new_city, f_cost)
+        path [new_city] = current
+
+  Display_Output(start,end,path, distance)
+
+def Display_Output(start,end,path, distance):
+  FinalPath = []
+  while end is not None:
+    FinalPath.append(end)
+    end = path.get(end)
+  FinalPath.reverse()
+
+  if len(FinalPath) == 1 and FinalPath[0] != start:
+    print(f"No path found from {start} to {end}")
+  else:
+    print()
+    print(f"Path from {start} to {FinalPath[-1]}: {' -&gt; '.join(FinalPath)}")
+    print(f"Total Distance:{distance[FinalPath[-1]]}")
+
+start_city = input("Enter the start city: ")
+end_city = input("Enter the destination city: ")
+
+Astar(start_city,end_city)
+</pre>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<html>
+<head>
+<title>C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/1/24241278_shibam_chakraborty_cse422_01_assignment01_fall2024_-_SHIBAM_CHAKRABORTY.py</title>
+</head>
+<body bgcolor="white">
+<hr/>
+C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/14/221016690_CSE422_14_LabAssignment1_-_RYAN_AZIM_ROUP.py<p></p><pre>
+import sys
+import heapq
+
+
+startNode = input("Start node: ")
+goalNode = input("Destination: ")
+
+
+sys.stdin = open("input.txt", "r")
+
+closest_node = {}
+city_map = {}
+heuristic_val = {}
+while True:
+    try:
+        inp = input().split(" ")
+        MC = inp[0]
+        if MC not in city_map:
+            city_map[MC] = {}
+
+        for i in range(2, len(inp), 2):
+            heuristic_val[inp[0]] = int(inp[1])
+            if i + 1 &lt; len(inp):
+                CT = inp[i]
+                DIS = int(inp[i + 1])
+                closest_node[CT] = DIS
+
+                city_map[inp[0]][CT] = DIS
+
+    except EOFError:
+        break
+
+
+
+<a name="0"></a><font color="#FF0000"><a href="match179-0.html#0" target="0"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_0_22.gif"/></a>
+
+def AStar(graph, heuristic_val, startNode, goalNode):
+    pq_set = []
+    heapq.heappush(pq_set, (heuristic_val[startNode], startNode))
+    gnCost = {}
+    fnCost = {}
+    backtrack_path = {}
+
+    for i in graph:
+        gnCost[i] = float('inf')
+        fnCost[i] = float('inf')
+    gnCost[startNode] = 0
+    fnCost[startNode] = heuristic_val[startNode]
+
+    while pq_set:
+        current_fnCost , currentNode = heapq.heappop(pq_set)
+
+        if currentNode == goalNode:
+            actual_path = []
+            while currentNode in backtrack_path:
+</font>                actual_path.append(currentNode)
+                currentNode = backtrack_path[currentNode]
+            actual_path.append(startNode)
+            actual_path.reverse()
+            return (actual_path , gnCost[goalNode])
+        else:
+            for closest_node,dist in graph[currentNode].items() :
+<a name="1"></a><font color="#00FF00"><a href="match179-0.html#1" target="0"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_1_12.gif"/></a>
+
+                total_gnCost = gnCost[currentNode] + dist
+
+                if total_gnCost &lt; gnCost[closest_node]:
+                    gnCost[closest_node] = total_gnCost
+                    fnCost[closest_node] = gnCost[closest_node] + heuristic_val[closest_node]
+                    backtrack_path[closest_node] = currentNode
+
+                    heapq.heappush(pq_set, (fnCost[closest_node], closest_node))
+</font>
+    return "NO PATH FOUND"
+
+
+
+a_star_path , total_cost = AStar(city_map, heuristic_val, startNode, goalNode)
+
+print("Path:" ,end = "")
+for path in range(len(a_star_path)):
+
+    if len(a_star_path) == path+1:
+        print(a_star_path[path])
+    else:
+        print(f" {a_star_path[path]}", end = " -&gt; ")
+
+print(f"Total Distance: {total_cost} km")
+
+
+</pre>
+</body>
+</html>

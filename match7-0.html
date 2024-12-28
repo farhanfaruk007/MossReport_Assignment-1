@@ -1,0 +1,120 @@
+<html>
+<head>
+<title>C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/2/20201125_Lab01_02_-_MST_SUSHMITA_KHATUN.py</title>
+</head>
+<body bgcolor="white">
+<hr/>
+C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/2/20201125_Lab01_02_-_MST_SUSHMITA_KHATUN.py<p></p><pre>
+<a name="1"></a><font color="#00FF00"><a href="match7-1.html#1" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_1_24.gif"/></a>
+
+f=open("input.txt",mode="r")
+lines=f.readlines()
+#print(lines)
+f.close()
+straight_line_distance={}
+output_dict = {}
+
+for x in lines:
+  li=x.strip()
+  after_split=li.split(" ")
+  #print(after_split)
+  key,values =after_split[0],after_split[1]
+  straight_line_distance[key]=values
+
+  parent_city=after_split[0]
+  child_city = [[after_split[i], int(after_split[i + 1])] for i in range(2, len(after_split), 2)]
+
+  output_dict[parent_city] = child_city
+#print(output_dict)
+
+def astarsearch(start_city,destination_city):
+  global output_dict, straight_line_distance
+  fringe=[]
+  list_city=[0, start_city]
+</font>  fringe.append(list_city)
+  #initially the path cost of the start node is 0
+<a name="0"></a><font color="#FF0000"><a href="match7-1.html#0" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_0_44.gif"/></a>
+
+  path_cost={start_city: 0}
+  heuristic_cost = {start_city:straight_line_distance [start_city]}
+  track_parent={}
+  #print(fringe)
+  #print(path_cost)
+  #print(heuristic_cost)
+  while fringe:
+    sorted_fringe = sorted(fringe)
+    node = sorted_fringe[0][1]
+    #print(output_dict[node])
+    fringe.pop(0)  # Remove the first element from the priority queue
+    #print(fringe)
+    for city, cost in output_dict[node]:
+            #print("child",city)
+            #print("cost",cost)
+            child_node_finder(city, cost, node, path_cost, heuristic_cost,track_parent,fringe)
+    optimal_path=[]
+    if node ==destination_city:
+      optimal_path.append(destination_city)
+      while node in track_parent:
+          optimal_path.append(track_parent[node])
+          node = track_parent[node]
+      return optimal_path
+
+
+def child_node_finder(child, cost, current_node, path_cost, heuristic_cost,track_parent, fringe):
+
+    total_cost = path_cost[current_node] + cost
+    if child  in path_cost:
+      pass
+
+    if (child not in path_cost) or (total_cost &lt; path_cost[child]):
+
+        track_parent[child] = current_node
+        path_cost[child] = total_cost
+        distance_cost=int(straight_line_distance[child])
+        heuristic_cost[child] = path_cost[child] + distance_cost
+        fringe.append([heuristic_cost[child], child])
+
+
+
+start_city="Arad"
+destination_city='Bucharest'
+path = astarsearch(start_city,destination_city)
+path = path[::-1]
+#print(path)
+length=len(path)
+
+
+input_user=input("enter: ")
+</font>a=0
+if input_user==start_city:
+    if a==0:
+        print("Path: ",end="")
+        a+=1
+    num=0
+    for p in path:
+     
+        if num!=len(path)-1:
+            print(p,"-&gt;",end="")
+            num+=1
+        else:
+            print(p)
+    counter = 0
+<a name="2"></a><font color="#0000FF"><a href="match7-1.html#2" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_2_12.gif"/></a>
+
+    for i in range(length-1):
+
+        for x in output_dict:
+          if path[i]==x:
+            for value in output_dict[x]:
+              if value[0] == path[i+1]:
+                  counter+=value[1]
+    print("Total distance: ",counter,"km")
+
+
+   
+         
+else:
+    print("NO PATH FOUND")
+</font></pre>
+</body>
+</html>

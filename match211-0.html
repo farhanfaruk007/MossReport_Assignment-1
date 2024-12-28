@@ -1,0 +1,99 @@
+<html>
+<head>
+<title>C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/1/21201113_Jayed_Ahmed_Asif_CSE422_01_Assignment01_Fall2024_-_JAYED_AHMED_ASIF.py</title>
+</head>
+<body bgcolor="white">
+<hr/>
+C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/1/21201113_Jayed_Ahmed_Asif_CSE422_01_Assignment01_Fall2024_-_JAYED_AHMED_ASIF.py<p></p><pre>
+# Reading the input file
+input_file = open("/content/inp.txt")
+lines = input_file.readlines()
+input_file.close()
+
+# Dictionaries for heuristics and graph representation
+heuristic_values = {}
+graph = {}
+
+# Helper function to get neighbors from the graph
+def get_neighbors(node):
+    return graph.get(node, None)
+
+# Preprocessing the input
+for i in range(len(lines)):
+    lines[i] = lines[i].strip()  # Remove trailing newline characters
+
+# A* Algorithm implementation
+def a_star_algorithm(start, goal):
+    open_set = set()
+    open_set.add(start)
+    closed_set = set()
+    parent_nodes = {}
+    node_costs = {}
+    
+    # Initialize the cost and parent dictionaries
+<a name="0"></a><font color="#FF0000"><a href="match211-1.html#0" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_0_33.gif"/></a>
+
+    node_costs[start] = 0
+    parent_nodes[start] = start
+
+    while len(open_set) &gt; 0:
+        current_node = None
+
+        # Find the node with the lowest f(x) = g(x) + h(x)
+        for node in open_set:
+            if current_node is None or node_costs[node] + heuristic_values[node] &lt; node_costs[current_node] + heuristic_values[current_node]:
+                current_node = node
+
+        if current_node is None:
+            print('No path found')
+            return None
+
+        # If the destination is reached
+        if current_node == goal:
+            path = []
+            while parent_nodes[current_node] != current_node:
+                path.append(current_node)
+                current_node = parent_nodes[current_node]
+            path.append(start)
+            path.reverse()
+
+            print("Path: ", " -&gt; ".join(path))
+            print("Total Distance:", node_costs[goal], "km")
+            return path
+</font>
+        # Process neighbors
+        open_set.remove(current_node)
+        closed_set.add(current_node)
+
+        for (neighbor, weight) in get_neighbors(current_node):
+            if neighbor in closed_set:
+                continue
+            tentative_cost = node_costs[current_node] + weight
+
+            if neighbor not in open_set:
+                open_set.add(neighbor)
+            elif tentative_cost &gt;= node_costs[neighbor]:
+                continue
+
+            # Update cost and parent
+            node_costs[neighbor] = tentative_cost
+            parent_nodes[neighbor] = current_node
+
+    print('No path found')
+    return None
+
+# Populate the heuristic and graph from the input file
+for line in lines:
+    parts = line.split(" ")
+    heuristic_values[parts[0]] = int(parts[1])
+    edges = parts[2:]
+    neighbors = [(edges[i], int(edges[i + 1])) for i in range(0, len(edges) - 1, 2)]
+    graph[parts[0]] = neighbors
+
+# Input and run the algorithm
+start_node = input("Start Node: ")
+end_node = input("Destination: ")
+a_star_algorithm(start_node, end_node)
+</pre>
+</body>
+</html>

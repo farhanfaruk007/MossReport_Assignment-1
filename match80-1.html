@@ -1,0 +1,95 @@
+<html>
+<head>
+<title>C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/12/21301525_takiba_lab1_12_fall24_-_TAKIBA_JAHAN.py</title>
+</head>
+<body bgcolor="white">
+<hr/>
+C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/12/21301525_takiba_lab1_fall24_422_-_TAKIBA_JAHAN.py<p></p><pre>
+import heapq
+
+def a_star_algorithm(graph, heuristic, start, goal):
+    """
+    This function implements the A* algorithm to find the shortest path
+    between a start node and a goal node.
+    """
+
+    # Priority queue to hold nodes with their total estimated cost (f = g + h)
+    open_set = []
+    # Start by pushing the start node with its heuristic value
+    heapq.heappush(open_set, (heuristic[start][0], start))
+
+    # Dictionary to store the cost from the start to a given node
+    g_cost = {start: 0}
+
+    # Dictionary to track the optimal path
+    came_from = {}
+
+    # Keep exploring until there are nodes to process
+    while open_set:
+        # Take the node with the lowest f-cost (g + h)
+        _, current_node = heapq.heappop(open_set)
+
+        # If we reach the goal, reconstruct the path
+        if current_node == goal:
+            path = []
+            while current_node in came_from:
+                path.append(current_node)
+                current_node = came_from[current_node]
+            path.append(start)  # Add the start node
+<a name="1"></a><font color="#00FF00"><a href="match80-0.html#1" target="0"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_1_20.gif"/></a>
+
+            path.reverse()  # Reverse to get the correct order
+            return path, g_cost[goal]
+
+        # Explore the neighbors of the current node
+        for neighbor, weight in graph[current_node]:
+            # Calculate the tentative g-cost for this neighbor
+            tentative_g_cost = g_cost[current_node] + weight
+
+            # If this path to the neighbor is better, update its costs
+            if neighbor not in g_cost or tentative_g_cost &lt; g_cost[neighbor]:
+                g_cost[neighbor] = tentative_g_cost  # Update g-cost
+                f_cost = tentative_g_cost + heuristic[neighbor][0]  # Calculate f-cost
+                heapq.heappush(open_set, (f_cost, neighbor))  # Add to the priority queue
+</font><a name="0"></a><font color="#FF0000"><a href="match80-0.html#0" target="0"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_0_42.gif"/></a>
+
+                came_from[neighbor] = current_node  # Track the path
+
+    # If we exhaust all nodes and don't reach the goal, there's no path
+    return None, float('inf')
+
+input = open('Input file.txt','r')
+lines = input.readlines()
+
+input.close()
+
+
+huristic = {}
+graph = {}
+
+for i in lines:
+    x =i.split()
+    
+    huristic[x[0]] = [int(x[1])]
+    graph[x[0]] = []
+    for j in range(2,len(x),2):
+        graph[x[0]].append((x[j],int(x[j+1])))
+    
+
+#print(huristic)
+
+
+
+start_node = 'Arad'
+destination_node = 'Bucharest'
+
+path, cost = a_star_algorithm(graph, huristic, start_node, destination_node)
+
+if path:
+    print(f"Shortest Path: {' -&gt; '.join(path)}")
+    print(f"Total Cost: {cost}")
+else:
+    print("No path found.")
+</font></pre>
+</body>
+</html>

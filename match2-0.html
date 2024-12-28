@@ -1,0 +1,109 @@
+<html>
+<head>
+<title>C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/3/19101454_Sarahat_Noor_Sakib_CSE422_03_Lab_Assignment01_Fall2024_-_SARAHAT_NOOR_SAKIB.py</title>
+</head>
+<body bgcolor="white">
+<hr/>
+C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/3/19101454_Sarahat_Noor_Sakib_CSE422_03_Lab_Assignment01_Fall2024_-_SARAHAT_NOOR_SAKIB.py<p></p><pre>
+
+<a name="0"></a><font color="#FF0000"><a href="match2-1.html#0" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_0_91.gif"/></a>
+
+import heapq
+
+class priorityQueue:
+
+    def __init__(self):
+        self.cities = []
+
+    def push(self, town, exp):
+        heapq.heappush(self.cities, (exp, town))
+
+    def pop(self):
+        return heapq.heappop(self.cities)[1]
+
+    def isEmpty(self):
+        if (self.cities == []):
+            return True
+        else:
+            return False
+
+    def check(self):
+        print(self.cities)
+
+class last_node:
+    def __init__(self, town, distance):
+        self.town = str(town)
+        self.distance = str(distance)
+
+romania = {}
+
+def makedict():
+    file = open("A Star Search.txt", 'r')
+    for string in file:
+        line = string.split(',')
+        x1 = line[0]
+        x2 = line[1]
+        dist = int(line[2])
+        romania.setdefault(x1, []).append(last_node(x2, dist))
+        romania.setdefault(x2, []).append(last_node(x1, dist))
+
+def makehuristikdict():
+    h = {}
+    with open("A Star Search_sld.txt", 'r') as file:
+        for line in file:
+            line = line.strip().split(",")
+            node = line[0].strip()
+            sld = int(line[1].strip())
+            h[node] = sld
+    return h
+
+def heuristic(node, values):
+    return values[node]
+
+def astar(start, end):
+    path = {}
+    distance = {}
+    x = priorityQueue()
+    y = makehuristikdict()
+    x.push(start, 0)
+    distance[start] = 0
+    path[start] = None
+    expandedList = []
+
+    while (x.isEmpty() == False):
+        nt = x.pop()
+        expandedList.append(nt)
+        if (nt == end):
+            break
+        for new in romania[nt]:
+            g_exp = distance[nt] + int(new.distance)
+
+            if (new.town not in distance or g_exp &lt; distance[new.town]):
+                distance[new.town] = g_exp
+                f_exp = g_exp + heuristic(new.town, y)
+
+                x.push(new.town, f_exp)
+                path[new.town] = nt
+    printoutput(start, end, path, distance, expandedList)
+
+def printoutput(start, end, path, distance, expandedlist):
+    finalpath = []
+    i = end
+    while (path.get(i) != None):
+        finalpath.append(i)
+        i = path[i]
+    finalpath.append(start)
+    finalpath.reverse()
+</font>    print("Path: " + str(finalpath))
+    print("Total Distance is " + str(distance[end] ) + " Kilo-Meter ")
+
+def main():
+    src = "Arad"
+    dst = "Bucharest"
+    makedict()
+    astar(src, dst)
+
+if __name__ == "__main__":
+    main()</pre>
+</body>
+</html>

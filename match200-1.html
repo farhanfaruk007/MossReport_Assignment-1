@@ -1,0 +1,96 @@
+<html>
+<head>
+<title>C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/14/21201426_CSE422_14_LabAssignment1.py_-_Abtahi_Bin_Jahangir_Chowdhury.py</title>
+</head>
+<body bgcolor="white">
+<hr/>
+C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/17/22341053_Md_Rafid_Sadat_CSE422_17_Assignment_01_Fall_2024_-_MD._RAFID_SADAT.py<p></p><pre>
+import heapq
+import queue
+
+# loading the graph from the file
+def graph_traverse(path):
+    graph = {}
+    heuristics = {}
+    # taking two list of storing neighbours of a node and the heuristic values
+
+    with open(path, 'r') as f:  # opening the input file given
+        for line in f:
+            data = line.split()
+            node = data[0]  # Accessing the node
+            heuristics[node] = int(data[1])  # Adding the heuristic for the node
+            neighbors = {} # taking a list of neighbour nodes
+            for i in range(2, len(data), 2):
+                neighbor = data[i]  # adding each nodes from the line to the neighbour node of the previously found node
+                distance = int(data[i + 1]) # adding distance/heuristic values
+                neighbors[neighbor] = distance
+            graph[node] = neighbors  # Store neighbors with distances for each node
+
+    return graph, heuristics
+
+
+# A* search function
+def a_star_search(graph, heuristics, start, goal):
+    # I need a priority queue to store nodes based on f(n) = g(n) + h(n)
+    # it will update the list and give me the priority value in O(log n) time complexity
+    open_set = []
+<a name="0"></a><font color="#FF0000"><a href="match200-0.html#0" target="0"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_0_31.gif"/></a>
+
+    heapq.heappush(open_set, (0 + heuristics[start], start, 0, [start]))
+    # pushing the values (f, node, g, path) to the priority queue
+
+    visited = set()
+    # A set to check visited or not
+
+    while open_set:
+        f, current_node, g, path = heapq.heappop(open_set)
+
+        # Check if we reached the goal
+        if current_node == goal:
+            return path, g
+
+        # Mark the node as visited
+        visited.add(current_node)
+
+        # Traverse all the neighbors
+        for neighbor, distance in graph.get(current_node, {}).items():
+            if neighbor in visited:
+                continue
+
+            # Calculate g(n) + h(n) for heuristic value
+            g_new = g + distance
+            f_new = g_new + heuristics[neighbor]  # f(n) = g(n) + h(n)
+            heapq.heappush(open_set, (f_new, neighbor, g_new, path + [neighbor]))
+
+    # Return if no path is found
+    return None, None
+
+
+# Main function
+def main():
+</font>    path = "input.txt"  # File containing the graph data
+    graph, heuristics = graph_traverse(path)
+
+    # Input for start and destination nodes so that the input won't be limited to just Arad &amp; Bucharest
+<a name="1"></a><font color="#00FF00"><a href="match200-0.html#1" target="0"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_1_14.gif"/></a>
+
+    start = input("Enter start node: ").strip()
+    goal = input("Enter destination node: ").strip()
+
+    # Run A* search
+    path, total_distance = a_star_search(graph, heuristics, start, goal)
+
+    # Display output
+    if path:
+        print("Path:", " -&gt; ".join(path))
+        print("Total distance:", total_distance, "km")
+    else:
+</font>        print("NO PATH FOUND")
+
+
+# Run the main function
+if __name__ == "__main__":
+    main()
+</pre>
+</body>
+</html>

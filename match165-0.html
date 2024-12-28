@@ -1,0 +1,86 @@
+<html>
+<head>
+<title>C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/9/22299312_Maidul_Islam_22299312_-_MAIDUL_ISLAM.py</title>
+</head>
+<body bgcolor="white">
+<hr/>
+C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/9/22299312_Maidul_Islam_22299312_-_MAIDUL_ISLAM.py<p></p><pre>
+<a name="1"></a><font color="#00FF00"><a href="match165-1.html#1" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_1_11.gif"/></a>
+
+class City:
+    def __init__(self, name, heuristic):
+        self.name = name
+        self.heuristic = heuristic
+        self.neighbors = {}
+        
+    def add_neighbor(self, neighbor_name, distance):
+        self.neighbors[neighbor_name] = distance
+
+def read_map_from_file(filename):
+    cities = {}
+</font>    file = open(filename, 'r')
+<a name="2"></a><font color="#0000FF"><a href="match165-1.html#2" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_2_9.gif"/></a>
+
+    lines = file.readlines()
+    for line in lines:
+        parts = line.strip().split()
+        city_name = parts[0]
+        heuristic = int(parts[1])
+        city = City(city_name, heuristic)
+        for i in range(2, len(parts), 2):
+</font>            neighbor = parts[i]
+            distance = int(parts[i + 1])
+            city.add_neighbor(neighbor, distance)
+        cities[city_name] = city
+    file.close()
+    return cities
+
+def find_path(cities, start_name):
+    end_name = "Bucharest"
+    if start_name not in list(cities.keys()):
+        return None, None
+    g_score = {}
+    cities_list = list(cities.keys())
+    for city in cities_list:
+        g_score[city] = float('inf')
+    g_score[start_name] = 0
+    came_from = {}
+    open_list = [[cities[start_name].heuristic, start_name]]
+    while open_list != []:
+        current_name = open_list.pop(0)[1]
+        if current_name == end_name:
+            path = []
+            current = current_name
+            while current in list(came_from.keys()):
+                path.append(current)
+                current = came_from[current]
+            path.append(start_name)
+            path.reverse()
+            return path, g_score[end_name]
+        current_city = cities[current_name]
+
+<a name="0"></a><font color="#FF0000"><a href="match165-1.html#0" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_0_14.gif"/></a>
+
+        for neighbor_name, distance in list(current_city.neighbors.items()):
+            tentative_g_score = g_score[current_name] + distance
+            if tentative_g_score &lt; g_score[neighbor_name]:
+                came_from[neighbor_name] = current_name
+                g_score[neighbor_name] = tentative_g_score
+                f_score = tentative_g_score + cities[neighbor_name].heuristic
+                open_list.append([f_score, neighbor_name])
+                open_list.sort()
+</font>    return None, None
+
+cities = read_map_from_file('Input1.txt')
+start_city = input("Start Node: ")
+print("Destination: Bucharest")
+path, total_distance = find_path(cities, start_city)
+
+if path == None:
+    print("NO PATH FOUND")
+else:
+    print("\nPath:", " -&gt; ".join(path))
+    print("Total distance:", total_distance, "km")
+</pre>
+</body>
+</html>

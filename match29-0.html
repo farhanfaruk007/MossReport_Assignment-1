@@ -1,0 +1,110 @@
+<html>
+<head>
+<title>C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/8/22201643_422_lab_1_Refath_sec-08_-_MD.REFATH_HOSSAIN.py</title>
+</head>
+<body bgcolor="white">
+<hr/>
+C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/8/22201643_422_lab_1_Refath_sec-08_-_MD.REFATH_HOSSAIN.py<p></p><pre>
+
+
+#ASSIGNMENT-1
+
+from queue import PriorityQueue
+
+
+# Open the file 'input.txt' in read mode
+with open('input.txt', 'r') as n:
+    dict = {}
+
+    # 20 ta input deya
+    for _ in range(20):
+<a name="1"></a><font color="#00FF00"><a href="match29-1.html#1" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_1_17.gif"/></a>
+
+        arr = n.readline().split()  # eita te prottek ta line ache
+        #print(hold)
+        # The first part is the node name and the second is its heuristic
+        dict[arr[0]] = [int(arr[1]), []]
+        #print(dict)
+
+        for j in range(2, len(arr), 2):
+
+            dict[arr[0]][1].append((arr[j], int(arr[j + 1])))#connected nodes
+</font>    #print(dict)
+
+
+
+
+
+
+
+start='Arad'
+end='Bucharest'
+
+
+<a name="4"></a><font color="#FF00FF"><a href="match29-1.html#4" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_4_8.gif"/></a>
+
+que = PriorityQueue()
+temp= dict[start]
+#print(temp)
+que.put([temp[0],[start],0])
+
+
+#final result
+def pathsearch(array,cost):
+</font><a name="3"></a><font color="#00FFFF"><a href="match29-1.html#3" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_3_11.gif"/></a>
+
+  final_path=""
+  for i in range(len(array)):
+    #print(array)
+    if i!=len(array)-1:
+      final_path+=array[i]+"--&gt; "
+    else:
+      final_path+=array[i]
+</font>  print('Path:',final_path)
+  print("Total Distance:",cost)
+  path_paisi=True
+
+
+
+<a name="2"></a><font color="#0000FF"><a href="match29-1.html#2" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_2_17.gif"/></a>
+
+visited=[]
+path_paisi=False
+while not que.empty():
+  deque= que.get()
+
+  node=deque[1][len(deque[1])-1]
+  cost=deque[2]
+  visited.append(node)
+
+  if node==end:
+    path_paisi=True
+</font>
+    pathsearch(deque[1],cost)
+    break
+
+<a name="0"></a><font color="#FF0000"><a href="match29-1.html#0" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_0_26.gif"/></a>
+
+  for tuplee in dict[node][1]:
+    #print(tup)
+
+    if tuplee[0] not in visited:
+      pathcost=tuplee[1]+cost
+      #print(pathcost)
+      huristic=dict[tuplee[0]][0]
+      #print(huristic)
+      totalcost=huristic+ pathcost
+
+
+      copy=deque[1].copy()
+      new=[totalcost,copy,pathcost]
+
+
+
+
+      new[1].append(tuplee[0])
+      que.put(new)
+if path_paisi==False:
+  print("NO PATH FOUND")</font></pre>
+</body>
+</html>

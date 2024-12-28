@@ -1,0 +1,124 @@
+<html>
+<head>
+<title>C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/4/23341060_kaushik_datta_CSE422_04_Assignment01_Fall2024.py_-_KAUSHIK_DATTA.py</title>
+</head>
+<body bgcolor="white">
+<hr/>
+C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/4/23341060_kaushik_datta_CSE422_04_Assignment01_Fall2024.py_-_KAUSHIK_DATTA.py<p></p><pre>
+from collections import deque
+
+file1 = open('/content/Input file.txt','r')
+inp = file1.readlines()
+
+
+dict1 = {}
+dict2 = {}
+for i in inp:
+    arr1 = i[:-1].split(" ")
+    arr2 = arr1[2:]
+    dict1[arr1[0]] = []
+    for j in range(len(arr2)-1):
+      if j%2==0:
+        dict1[arr1[0]].append((arr2[j],int(arr2[j+1])))
+    dict2[arr1[0]]=int(arr1[1])
+
+
+
+
+class Graph:
+
+
+    def __init__(self, adjacency_list,heuristic_val):
+        self.adjacency_list = adjacency_list
+        self.heuristic_val = heuristic_val
+
+    def get_neighbors(self, v):
+
+        return self.adjacency_list[v]
+
+    def h(self, n):
+<a name="1"></a><font color="#00FF00"><a href="match108-1.html#1" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_1_6.gif"/></a>
+
+        return self.heuristic_val[n]
+
+    def a_star_algorithm(self, start_node, stop_node):
+
+        # This is the part of the code that is initializing the open list, closed list, g, and
+        # parents.
+        open_list = set([start_node])
+        closed_list = set([])
+
+        g = {}
+
+        g[start_node] = 0
+
+        parents = {}
+        parents[start_node] = start_node
+</font>
+<a name="0"></a><font color="#FF0000"><a href="match108-1.html#0" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_0_15.gif"/></a>
+
+        while len(open_list) &gt; 0:
+            n = None
+
+            # This is the part of the code that is finding the node with the lowest f value.
+            for v in open_list:
+                if n == None or g[v] + self.h(v) &lt; g[n] + self.h(n):
+                    n = v
+
+            if n == None:
+                print('Path does not exist!')
+                return None
+
+            if n == stop_node:
+                reconst_path = []
+
+                while parents[n] != n:
+                    reconst_path.append(n)
+</font>                    n = parents[n]
+
+                reconst_path.append(start_node)
+
+                reconst_path.reverse()
+
+                dis = 0
+                # This is the part of the code that calculates the distance of the path.
+                for x in range(len(reconst_path)-1):
+                  for (y,z) in self.adjacency_list[reconst_path[x]]:
+                    if y==reconst_path[x+1]:
+                      dis+=z
+                return (f"Distance: {dis} Km \nPath: {' -&gt;' .join(reconst_path)}")
+<a name="3"></a><font color="#00FFFF"><a href="match108-1.html#3" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_3_6.gif"/></a>
+
+            for (m, weight) in self.get_neighbors(n):
+
+                if m not in open_list and m not in closed_list:
+                    open_list.add(m)
+                    parents[m] = n
+</font>                    g[m] = g[n] + weight
+
+                else:
+                    if g[m] &gt; g[n] + weight:
+<a name="2"></a><font color="#0000FF"><a href="match108-1.html#2" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_2_6.gif"/></a>
+
+                        g[m] = g[n] + weight
+                        parents[m] = n
+
+                        if m in closed_list:
+                            closed_list.remove(m)
+                            open_list.add(m)
+
+            open_list.remove(n)
+            closed_list.add(n)
+
+        print('Path does not exist!')
+</font>        return None
+
+# Taking the input from the user and then printing the output.
+start_node = input('Start node: ')
+end_node = input('Destination: ')
+graph1 = Graph(dict1,dict2)
+print(graph1.a_star_algorithm(start_node, end_node))
+
+</pre>
+</body>
+</html>

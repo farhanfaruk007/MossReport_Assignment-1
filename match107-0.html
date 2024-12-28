@@ -1,0 +1,95 @@
+<html>
+<head>
+<title>C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/7/21201626_Jotham_Protik_Baroi_CSE422_07_Assignment01_Fall2024_-_JOTHAM_PROTIK_BAROI.py</title>
+</head>
+<body bgcolor="white">
+<hr/>
+C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/7/21201626_Jotham_Protik_Baroi_CSE422_07_Assignment01_Fall2024_-_JOTHAM_PROTIK_BAROI.py<p></p><pre>
+import heapq
+class MapGraph:
+    def __init__(self):
+        self.connections = {}
+    def connect_nodes(self, nodeA, nodeB, distance=0):
+        if nodeA not in self.connections:
+            self.connections[nodeA]=[]
+        if nodeB not in self.connections:
+<a name="1"></a><font color="#00FF00"><a href="match107-1.html#1" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_1_11.gif"/></a>
+
+            self.connections[nodeB]=[]
+        if (nodeA, distance) not in self.connections[nodeB]:
+            self.connections[nodeB].append((nodeA, distance))
+        if (nodeB, distance) not in self.connections[nodeA]:
+            self.connections[nodeA].append((nodeB, distance))
+    def nearby_nodes(self, node):
+        return self.connections.get(node, "&lt;!Node Not Found!&gt;")
+</font>    def display_map(self):
+        return self.connections
+def calculate_heuristic(target, heuristics) -&gt; int:
+    for n, h in heuristics:
+        if n==target:
+            return h
+    return 0
+def search_a_star(map_graph, start, end, heuristics):
+    to_visit=[(0, start)]   
+    explored=set()           
+    distance={start: 0}      
+    path_tracker={} 
+    while to_visit:
+        _, current=heapq.heappop(to_visit)
+        if current==end:
+            final_path=[]
+            total_distance=distance[current]
+            while current in path_tracker:
+                final_path.append(current)
+                current=path_tracker[current]
+            final_path.append(start)
+            return list(reversed(final_path)), total_distance
+        explored.add(current)
+        for neighbor, travel_cost in map_graph.nearby_nodes(current):
+            new_cost=distance[current]+travel_cost
+            if neighbor in explored or new_cost&gt;=distance.get(neighbor, float('inf')):
+                continue
+            if new_cost&lt;distance.get(neighbor, float('inf')):
+                path_tracker[neighbor]=current
+                distance[neighbor]=new_cost
+                projected_cost=new_cost+calculate_heuristic(neighbor, heuristics)
+                heapq.heappush(to_visit, (projected_cost, neighbor))
+    return None, 0 
+<a name="2"></a><font color="#0000FF"><a href="match107-1.html#2" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_2_8.gif"/></a>
+
+def read_file(filename):
+    with open(filename, 'r') as file:
+        return file.readlines()
+if __name__=='__main__':
+    input_data=read_file("input.txt")
+    map_graph=MapGraph()
+    heuristic_values=[]
+    for line in input_data:
+        line=line.strip()
+</font>        if not line:
+            continue
+        details=line.split()
+        if len(details)%2!=0:
+            print(f"Invalid format in line: {details}")
+            continue
+<a name="0"></a><font color="#FF0000"><a href="match107-1.html#0" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_0_12.gif"/></a>
+
+        node_details=[(details[i], int(details[i + 1])) for i in range(0, len(details), 2)]
+        main_node=node_details[0][0]
+        main_heuristic=node_details[0][1]
+        heuristic_values.append((main_node, main_heuristic))
+        neighbors=node_details[1:]
+        for neighbor in neighbors:
+            distance=neighbor[1]
+            map_graph.connect_nodes(main_node, neighbor[0], distance)
+    start=input("Enter starting point: ")
+</font>    goal=input("Enter destination: ")
+    path, total_distance = search_a_star(map_graph, start, goal, heuristic_values)
+    if path:
+        path_output = ' -&gt; '.join(path)
+        print(f"Path: {path_output}")
+        print(f"Total Distance: {total_distance} km")
+    else:
+        print("NO PATH FOUND")</pre>
+</body>
+</html>

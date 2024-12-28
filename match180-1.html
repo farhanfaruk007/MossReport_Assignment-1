@@ -1,0 +1,86 @@
+<html>
+<head>
+<title>C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/17/22101862_Trisheeta_CSE422_17_Assignment01_Fall2024_-_TRISHEETA_JAHAN_AZAD.py</title>
+</head>
+<body bgcolor="white">
+<hr/>
+C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/17/22141026_AdnanAlSayeedSihab_CSE422_17_Assignment01_Fall2024_-_Adnan_Al_Sayeed_Sihab.py<p></p><pre>
+import heapq
+input_txt = open("input.txt", "r")
+
+def parse_heuristics(input_txt):
+    city_heuristics = {}
+    neighbor_heuristics = {}
+
+    for x in input_txt:
+        city_data = x.strip().split()
+        city_name = city_data[0]
+        city_heuristics[city_name] = int(city_data[1])
+        
+        neighbors = {}
+        for i in range(2, len(city_data), 2):
+            neighbor_city = city_data[i]
+<a name="2"></a><font color="#0000FF"><a href="match180-0.html#2" target="0"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_2_9.gif"/></a>
+
+            neighbor_cost = int(city_data[i + 1])
+            neighbors[neighbor_city] = neighbor_cost
+
+        neighbor_heuristics[city_name] = neighbors
+
+    return city_heuristics, neighbor_heuristics
+
+city_heuristics, neighbor_heuristics = parse_heuristics(input_txt)
+</font><a name="0"></a><font color="#FF0000"><a href="match180-0.html#0" target="0"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_0_15.gif"/></a>
+
+input_txt.close()
+
+def a_star(start, goal, neighbors, heuristics):
+    visited = []
+    heapq.heappush(visited, (0, start))
+    path = {start: None}
+    cost = {start: 0}
+
+    while visited:
+        current_city = heapq.heappop(visited)[1]
+
+        if current_city == goal:
+            break
+</font>
+        for neighbor in neighbors.get(current_city, {}):
+            new_cost = cost[current_city] + neighbors[current_city][neighbor]
+            if neighbor not in cost or new_cost &lt; cost[neighbor]:
+                cost[neighbor] = new_cost
+                priority = new_cost + heuristics[neighbor]
+<a name="1"></a><font color="#00FF00"><a href="match180-0.html#1" target="0"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_1_15.gif"/></a>
+
+                heapq.heappush(visited, (priority, neighbor))
+                path[neighbor] = current_city
+
+    return path, cost
+
+def build_output(path, cost, start, goal):
+    route = []
+    current = goal
+    while current != start:
+        route.append(current)
+        current = path[current]
+    route.append(start)
+</font>
+    if route:
+        route.reverse()
+        print("Path:", " --&gt; ".join(route))
+    else:
+        print("No path found.")
+    
+    print(f'Total distance: {cost[goal]} km')
+
+start = input("Enter the start city: ")
+goal = input("Enter the goal city: ")
+
+if start not in city_heuristics or goal not in city_heuristics:
+    print("Start or goal does not exist.")
+else:
+    path, cost = a_star(start, goal, neighbor_heuristics, city_heuristics)
+    build_output(path, cost, start, goal)</pre>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<html>
+<head>
+<title>C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/4/19101309_Labiba_Tasnim_CSE422_sec04_assignment01_-_LABIBA_TASNIM.py</title>
+</head>
+<body bgcolor="white">
+<hr/>
+C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/4/19101309_Labiba_Tasnim_CSE422_sec04_assignment01_-_LABIBA_TASNIM.py<p></p><pre>
+import heapq
+
+def read_graph(file_path):
+    adjacency_list = {}
+    h_values = {}
+    
+    with open(file_path, 'r') as file:
+        for line in file:
+            parts = line.split()
+            city = parts[0]
+            h_cost = int(parts[1])
+            h_values[city] = h_cost
+            
+            edges = {}
+            for j in range(2, len(parts), 2):
+                adjacent_city = parts[j]
+<a name="0"></a><font color="#FF0000"><a href="match52-1.html#0" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_0_75.gif"/></a>
+
+                travel_cost = int(parts[j + 1])
+                edges[adjacent_city] = travel_cost
+            adjacency_list[city] = edges
+            
+    return adjacency_list, h_values
+
+def heuristic_value(node, h_values):
+    return h_values.get(node, float('inf'))
+
+def a_star_algorithm(adjacency_list, h_values, source, destination):
+    open_set = []
+    heapq.heappush(open_set, (0, source))
+    
+    parent_map = {source: None}
+    total_cost = {source: 0}
+    
+    while open_set:
+        _, current_node = heapq.heappop(open_set)
+        
+        if current_node == destination:
+            break
+        
+        for neighbor, edge_cost in adjacency_list.get(current_node, {}).items():
+            cumulative_cost = total_cost[current_node] + edge_cost
+            if neighbor not in total_cost or cumulative_cost &lt; total_cost[neighbor]:
+                total_cost[neighbor] = cumulative_cost
+                estimated_cost = cumulative_cost + heuristic_value(neighbor, h_values)
+                heapq.heappush(open_set, (estimated_cost, neighbor))
+                parent_map[neighbor] = current_node
+                
+    return parent_map, total_cost
+
+def build_path(parent_map, source, destination):
+    path = []
+    step = destination
+    
+    while step != source:
+        path.append(step)
+        step = parent_map.get(step)
+        if step is None:
+            return None
+    path.append(source)
+    path.reverse()
+    return path
+
+# File with graph data
+file_path = 'input.txt'
+adjacency_list, h_values = read_graph(file_path)
+
+# User input for source and destination
+source = input("Enter the start location: ")
+destination = input("Enter the goal location: ")
+
+parent_map, total_cost = a_star_algorithm(adjacency_list, h_values, source, destination)
+
+# Display the results
+optimal_path = build_path(parent_map, source, destination)
+if optimal_path:
+    print(f"Optimal Path: {' -&gt; '.join(optimal_path)}")
+    print(f"Total Cost: {total_cost[destination]} km")
+else:
+    print("No Valid Path Found")
+</font></pre>
+</body>
+</html>

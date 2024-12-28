@@ -1,0 +1,88 @@
+<html>
+<head>
+<title>C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/8/22101033_CSE422lab01_Fahad_AL_Mahmood_08_-_FAHAD_AL_MAHMOOD.py</title>
+</head>
+<body bgcolor="white">
+<hr/>
+C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/8/22101033_CSE422lab01_Fahad_AL_Mahmood_08_-_FAHAD_AL_MAHMOOD.py<p></p><pre>
+# a* seearch
+input=open('input_1.txt','r')
+dicc={}
+for i in input:
+  info=i.split()
+  start=info[0]
+  h_value=int(info[1])
+  sd=info[2:]
+  # print(sd)
+<a name="2"></a><font color="#0000FF"><a href="match20-1.html#2" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_2_11.gif"/></a>
+
+  dicc[start]={'h_value':h_value,'sd': {} }
+  for i in range(0,len(sd),2):
+    child,dis=sd[i],int(sd[i+1])
+    dicc[start]['sd'][child]=dis
+</font># print(dicc)
+
+
+import heapq
+<a name="0"></a><font color="#FF0000"><a href="match20-1.html#0" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_0_41.gif"/></a>
+
+def astar(st,des):
+  path=[]
+  path.append((0,st))
+  total_dis={}
+  for i in dicc:
+    total_dis[i]=float('inf')
+  total_dis[st]=0
+  estimated={}
+  for j in dicc:
+    estimated[j]=float('inf')
+  estimated[st]=dicc[st]['h_value']
+  # print(estimated)
+
+  out={}
+  while len(path) &gt; 0:
+    x,y=heapq.heappop(path)
+    if y == des:
+      p=[]
+      while y in out:
+        p.append(y)
+        y=out[y]
+      p.append(st)
+      p.reverse()
+      # print(p)
+      return p,total_dis[des]
+
+    for cld,dis in dicc[y]['sd'].items():
+      act=total_dis[y] + dis
+      if act &lt;total_dis[cld]:
+</font><a name="3"></a><font color="#00FFFF"><a href="match20-1.html#3" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_3_10.gif"/></a>
+
+        out[cld]=y
+        total_dis[cld] = act
+        estimated[cld]=total_dis[cld] +dicc[cld]['h_value']
+        # print(estimated)
+        heapq.heappush(path,(estimated[cld],cld))
+
+
+  return None, float('inf')
+</font>
+start='Arad'
+end='Bucharest'
+
+<a name="1"></a><font color="#00FF00"><a href="match20-1.html#1" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_1_15.gif"/></a>
+
+a,b=astar(start,end)
+
+if a is not None and len(a)&gt;0:
+  print('path:',end=" ")
+  for i in range(len(a)):
+    if i &lt; len(a) -1:
+      print(a[i],end="--&gt;")
+    else:
+      print(a[i])
+</font>
+  print(f"total distnce {b} km")
+else:
+  print("NO PATH FOUND")</pre>
+</body>
+</html>

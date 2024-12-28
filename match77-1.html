@@ -1,0 +1,69 @@
+<html>
+<head>
+<title>C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/7/20101526_sharmistha_roy_cse422_07_assignment01_fall2024_-_SHARMISTHA_ROY.py</title>
+</head>
+<body bgcolor="white">
+<hr/>
+C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/7/24341270_SartizAlamAyon_CSE422_07_Assignment01_Fall2024_-_SARTIZ_ALAM_AYON.py<p></p><pre>
+import heapq
+
+graph = {}
+heuristic_set = {}
+start_node = input("Start node: ")
+destination = input("Destination: ")
+
+input_file = open("input.txt", "r")
+output_file = open("output.txt", "w")
+
+for line in input_file:
+    read_input = line.split()
+    # print(read_input)
+    node = read_input[0]
+    heuristic_val = int(read_input[1])
+    heuristic_set[node] = heuristic_val
+    neighbours = []
+    for i in range(2, len(read_input), 2):
+        neighbor_node = read_input[i]
+        neighbor_weight = int(read_input[i + 1])
+        neighbours.append((neighbor_node, neighbor_weight))
+    graph[node] = neighbours
+
+<a name="0"></a><font color="#FF0000"><a href="match77-0.html#0" target="0"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_0_44.gif"/></a>
+
+def aStarSearch(graph, start, goal, heuristic_set):
+    priority_q = [(0, start)]
+    visited = {start: (None, 0)}
+    while priority_q:
+        curr_cost, curr_node = heapq.heappop(priority_q)
+        if curr_node == goal:
+            path = []
+            while curr_node is not None:
+                path.append(curr_node)
+                curr_node = visited[curr_node][0]
+            path.reverse()
+            return path, visited[goal][1]
+        for neighbor, cost in graph.get(curr_node, []):
+            new_cost = visited[curr_node][1] + cost
+            if neighbor not in visited or new_cost &lt; visited[neighbor][1]:
+                visited[neighbor] = (curr_node, new_cost)
+                heapq.heappush(priority_q, (new_cost + heuristic_set.get(neighbor, 0), neighbor))
+    return None, None
+
+if (start_node not in graph):
+</font>    output_file.write("NO PATH FOUND")
+<a name="1"></a><font color="#00FF00"><a href="match77-0.html#1" target="0"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_1_16.gif"/></a>
+
+elif (destination not in graph):
+    output_file.write("NO PATH FOUND")
+else:
+    path, total_distance = aStarSearch(graph, start_node, destination, heuristic_set)
+    if path is None:
+        output_file.write("NO PATH FOUND")
+    else:
+        output_file.write("Path: " + " -&gt; ".join(path) + "\n")
+        output_file.write("Total distance: " + str(total_distance) + " km")
+</font>
+input_file.close()
+output_file.close()</pre>
+</body>
+</html>

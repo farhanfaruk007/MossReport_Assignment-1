@@ -1,0 +1,105 @@
+<html>
+<head>
+<title>C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/9/21341026_humayera_21341026_-_HUMAYERA_SHAYERA_HURI.py</title>
+</head>
+<body bgcolor="white">
+<hr/>
+C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/12/21201300_Assignment_1_-_JAHIDUL_HASSAN_RIFAT.py<p></p><pre>
+
+<a name="0"></a><font color="#FF0000"><a href="match245-0.html#0" target="0"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_0_10.gif"/></a>
+
+import heapq
+
+class Graph:
+    def __init__(self):
+        self.edges = {}
+        self.heuristics = {}
+
+    def add_edge(self, node_1, node_2, dis):
+        if node_1 not in self.edges:
+            self.edges[node_1] = []
+</font>
+        if node_2 not in self.edges:
+            self.edges[node_2] = []
+
+        self.edges[node_1].append((node_2, dis))
+<a name="1"></a><font color="#00FF00"><a href="match245-0.html#1" target="0"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_1_8.gif"/></a>
+
+        self.edges[node_2].append((node_1, dis))
+
+    def set_heuristicsa(self, node, value):
+        self.heuristics[node] = value
+
+    def get_heuristics(self, node):
+        return self.heuristics.get(node, float('inf'))
+</font>
+    def astar(self, start, goal):
+        if start not in self.edges or goal not in self.edges:
+            return 'NO PATH FOUND'
+
+        lst = [(self.get_heuristics(start), 0, start, [])]
+        set_close = set()
+
+        while lst:
+            _, cost, node, path = heapq.heappop(lst)
+
+            if node == goal:
+                return path + [node], cost
+
+            if node in set_close:
+                continue
+
+            set_close.add(node)
+
+            for neighbour, distance in self.edges.get(node, []):
+                if neighbour in set_close:
+                    continue
+
+                new_path = path + [node]
+                new_cost = cost + distance
+                f_score = new_cost + self.get_heuristics(neighbour)
+                heapq.heappush(lst, (f_score, new_cost, neighbour, new_path))
+        
+        return 'NO PATH FOUND'
+
+
+def file_read(input_file):
+    graph = Graph()
+
+    input_file = open('Input file.txt', 'r')
+    for l in input_file:
+        temp = l.strip().split()
+        if len(temp) &lt;3:
+            continue
+        node = temp[0]
+        heuristic = int(temp[1])
+        graph.set_heuristicsa(node, heuristic)
+
+<a name="2"></a><font color="#0000FF"><a href="match245-0.html#2" target="0"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_2_7.gif"/></a>
+
+        for j in range(2, len(temp), 2):
+            neighbour = temp[j]
+            distance = int(temp[j+1])
+            graph.add_edge(node, neighbour, distance)
+
+    return graph
+
+
+def final(file_input):
+</font>    graph = file_read(file_input)
+    start = input("Enter your Starting Node: ").strip()
+    goal = input("Enter your Destination: ").strip()
+    path, cost = graph.astar(start, goal)
+
+    if path == 'NO PATH FOUND':
+        print('NO PATH FOUND')
+    else:
+        print(f"Path: {' -&gt; '.join(path)}")
+        print(f"Total distance: {cost} km")
+
+
+if __name__ == '__main__':
+    file_input = '/content/Input file.txt'
+    final(file_input)</pre>
+</body>
+</html>

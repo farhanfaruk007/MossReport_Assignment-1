@@ -1,0 +1,84 @@
+<html>
+<head>
+<title>C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/5/21101322_Lab1_Sec5_-_MD._SHOAIBUR_RAHMAN.py</title>
+</head>
+<body bgcolor="white">
+<hr/>
+C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/5/21101322_Lab1_Sec5_-_MD._SHOAIBUR_RAHMAN.py<p></p><pre>
+import heapq
+
+def read_graph_data(file_path):
+    routes = {}
+    heuristics = {}
+
+    with open(file_path, 'r') as f:
+        for line in f:
+            elements = line.strip().split()
+            city = elements[0]
+            heuristic_value = int(elements[1])
+            heuristics[city] = heuristic_value
+            neighbors = {}
+            for i in range(2, len(elements), 2):
+                neighbor_city = elements[i]
+<a name="0"></a><font color="#FF0000"><a href="match49-1.html#0" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_0_74.gif"/></a>
+
+                distance = int(elements[i + 1])
+                neighbors[neighbor_city] = distance
+            routes[city] = neighbors
+
+    return routes, heuristics
+
+def estimate_distance(city, heuristic_data):
+    return heuristic_data.get(city, float('inf'))
+
+def a_star_find_path(routes, heuristics, start_city, destination_city):
+    open_list = []
+    heapq.heappush(open_list, (0, start_city))
+    path_trace = {start_city: None}
+    cumulative_cost = {start_city: 0}
+
+    while open_list:
+        _, current_city = heapq.heappop(open_list)
+
+        if current_city == destination_city:
+            break
+
+        for adjacent_city, travel_cost in routes.get(current_city, {}).items():
+            new_total_cost = cumulative_cost[current_city] + travel_cost
+            if adjacent_city not in cumulative_cost or new_total_cost &lt; cumulative_cost[adjacent_city]:
+                cumulative_cost[adjacent_city] = new_total_cost
+                estimated_cost = new_total_cost + estimate_distance(adjacent_city, heuristics)
+                heapq.heappush(open_list, (estimated_cost, adjacent_city))
+                path_trace[adjacent_city] = current_city
+
+    return path_trace, cumulative_cost
+
+def extract_route(path_trace, start_city, destination_city):
+    route = []
+    step = destination_city
+    while step != start_city:
+        route.append(step)
+        step = path_trace.get(step)
+        if step is None:
+            return None
+    route.append(start_city)
+    route.reverse()
+    return route
+
+file_path = 'input.txt'
+routes, heuristics = read_graph_data(file_path)
+
+start_city = input("Enter the starting city: ")
+destination_city = input("Enter the destination city: ")
+
+path_trace, cumulative_cost = a_star_find_path(routes, heuristics, start_city, destination_city)
+
+route = extract_route(path_trace, start_city, destination_city)
+if route:
+    print(f"Path: {' -&gt; '.join(route)}")
+    print(f"Total distance: {cumulative_cost[destination_city]} km")
+else:
+    print("NO PATH FOUND")
+</font></pre>
+</body>
+</html>

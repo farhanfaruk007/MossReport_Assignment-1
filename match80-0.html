@@ -1,0 +1,116 @@
+<html>
+<head>
+<title>C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/12/21301525_takiba_lab1_12_fall24_-_TAKIBA_JAHAN.py</title>
+</head>
+<body bgcolor="white">
+<hr/>
+C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/12/21301525_takiba_lab1_12_fall24_-_TAKIBA_JAHAN.py<p></p><pre>
+class HeapQueue:
+    
+    def __init__(self):
+        self.heap = []
+
+    def push(self, item):
+        
+        self.heap.append(item)
+        self._sift_up(len(self.heap) - 1)
+
+    def pop(self):
+       
+        if len(self.heap) == 0:
+            raise IndexError("pop from an empty heap")
+        self._swap(0, len(self.heap) - 1)  
+        item = self.heap.pop()  
+        self._sift_down(0) 
+        return item
+
+    def is_empty(self):
+        
+        return len(self.heap) == 0
+
+    def _sift_up(self, index):
+        
+        parent = (index - 1) // 2
+        while index &gt; 0 and self.heap[index][0] &lt; self.heap[parent][0]:
+            self._swap(index, parent)
+            index = parent
+            parent = (index - 1) // 2
+
+    def _sift_down(self, index):
+        
+        child = 2 * index + 1  
+        while child &lt; len(self.heap):
+           
+            right = child + 1
+            if right &lt; len(self.heap) and self.heap[right][0] &lt; self.heap[child][0]:
+                child = right
+           
+            if self.heap[index][0] &lt;= self.heap[child][0]:
+                break
+            self._swap(index, child)
+            index = child
+            child = 2 * index + 1
+
+    def _swap(self, i, j):
+    
+        self.heap[i], self.heap[j] = self.heap[j], self.heap[i]
+
+
+def a_star_algorithm(graph, heuristic, start, goal):
+    open_set = HeapQueue()
+    open_set.push((heuristic[start][0], start))
+    g_cost = {start: 0}
+    came_from = {}
+
+    while not open_set.is_empty():
+        _, current_node = open_set.pop()
+        if current_node == goal:
+            path = []
+            while current_node in came_from:
+                path.append(current_node)
+                current_node = came_from[current_node]
+            path.append(start)
+<a name="1"></a><font color="#00FF00"><a href="match80-1.html#1" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_1_11.gif"/></a>
+
+            path.reverse()
+            return path, g_cost[goal]
+
+        for neighbor, weight in graph[current_node]:
+            tentative_g_cost = g_cost[current_node] + weight
+            if neighbor not in g_cost or tentative_g_cost &lt; g_cost[neighbor]:
+                g_cost[neighbor] = tentative_g_cost
+                f_cost = tentative_g_cost + heuristic[neighbor][0]
+                open_set.push((f_cost, neighbor))
+</font><a name="0"></a><font color="#FF0000"><a href="match80-1.html#0" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_0_22.gif"/></a>
+
+                came_from[neighbor] = current_node
+
+    return None, float('inf')
+
+
+input_file = open('Input file.txt', 'r')
+lines = input_file.readlines()
+input_file.close()
+
+huristic = {}
+graph = {}
+
+for line in lines:
+    x = line.split()
+    huristic[x[0]] = [int(x[1])]
+    graph[x[0]] = []
+    for j in range(2, len(x), 2):
+        graph[x[0]].append((x[j], int(x[j + 1])))
+
+start_node = 'Arad'
+destination_node = 'Bucharest'
+
+path, cost = a_star_algorithm(graph, huristic, start_node, destination_node)
+
+if path:
+    print(f"Shortest Path: {' -&gt; '.join(path)}")
+    print(f"Total Cost: {cost}")
+else:
+    print("No path found.")</font></pre>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<html>
+<head>
+<title>C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/7/21201626_Jotham_Protik_Baroi_CSE422_07_Assignment01_Fall2024_-_JOTHAM_PROTIK_BAROI.py</title>
+</head>
+<body bgcolor="white">
+<hr/>
+C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/9/23341052_OindrilaSaha_23341052.py<p></p><pre>
+import heapq
+
+class Graph:
+    def __init__(self):
+        self.adjLst = {}
+
+    def addEdges(self, nodeOne, nodeTwo, dis=0):
+        if nodeOne not in self.adjLst:
+            self.adjLst[nodeOne] = []
+        
+        if nodeTwo not in self.adjLst:
+            self.adjLst[nodeTwo] = []
+
+        if (nodeOne,dis) not in self.adjLst[nodeTwo]:
+            self.adjLst[nodeTwo] += [(nodeOne, dis)]
+
+        if (nodeTwo,dis) not in self.adjLst[nodeOne]:
+            self.adjLst[nodeOne] += [(nodeTwo, dis)]
+
+    def getNeighbors(self, node):
+        return self.adjLst[node] if node in self.adjLst else "&lt;!Node not Found!&gt;"
+
+<a name="2"></a><font color="#0000FF"><a href="match150-0.html#2" target="0"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_2_6.gif"/></a>
+
+    def getGraph(self):
+        return self.adjLst
+
+def heuristic(node, heuristicList) -&gt; int:
+    for n, hval in heuristicList:
+        if n == node:
+            return hval
+        
+    return 0   
+</font>
+def aStarSearch(graph, start, goal, heuristicList):
+    notvstd = [(0, start)]   
+    vstd = set()             
+    cost = {start: 0}          
+    par = {}                
+
+    while notvstd:
+        x, curr = heapq.heappop(notvstd)
+
+        if curr == goal:
+            path = []
+            totalCost = cost[curr]
+            while curr in par:
+                path.append(curr)
+                curr = par[curr]
+            path.append(start)
+
+            return list(reversed(path)), totalCost  
+
+        vstd.add(curr)
+
+        for nbr, nbrCost in graph.getNeighbors(curr):
+            tentativeCost = cost[curr] + nbrCost
+
+            if nbr in vstd or tentativeCost &gt;= cost.get(nbr, float('inf')):
+                continue
+
+            if tentativeCost &lt; cost.get(nbr, float('inf')):
+                par[nbr] = curr
+                cost[nbr] = tentativeCost
+                totalCost = tentativeCost + heuristic(nbr, heuristicList)
+                heapq.heappush(notvstd, (totalCost, nbr))
+
+    return None, 0  
+
+<a name="1"></a><font color="#00FF00"><a href="match150-0.html#1" target="0"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_1_8.gif"/></a>
+
+def getInput(filename):
+    with open(filename, 'r') as f:
+        return f.readlines()
+
+if __name__ == '__main__':
+    nodeInputs = getInput("input.txt")
+    graph = Graph()
+    heuristicList = []
+
+    for nodeInfo in nodeInputs:
+        nodeInfo = nodeInfo.split(' ')
+</font><a name="0"></a><font color="#FF0000"><a href="match150-0.html#0" target="0"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_0_13.gif"/></a>
+
+        nodeList = [(nodeInfo[i], int(nodeInfo[i+1].rstrip())) for i in range(0, len(nodeInfo), 2)]
+        node = nodeList[0][0]
+        hval = nodeList[0][1]
+        heuristicList.append((node, hval))
+        neighbors = nodeList[1:]
+        for nbr in neighbors:
+            dis = nbr[1]
+            graph.addEdges(node, nbr[0], dis)
+
+    start = input("Start node: ")
+</font>    goal = input("Destination: ")
+    path, totalCost = aStarSearch(graph, start, goal, heuristicList)
+
+    
+    if path:
+        pathString = ' -&gt; '.join(path)
+        print(f"Path: {pathString}")
+        print(f"Total disance: {totalCost} km")
+    else:
+        print("NO PATH FOUND.")
+
+
+
+</pre>
+</body>
+</html>

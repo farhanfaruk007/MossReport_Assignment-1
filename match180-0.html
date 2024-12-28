@@ -1,0 +1,96 @@
+<html>
+<head>
+<title>C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/17/22101862_Trisheeta_CSE422_17_Assignment01_Fall2024_-_TRISHEETA_JAHAN_AZAD.py</title>
+</head>
+<body bgcolor="white">
+<hr/>
+C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/17/22101862_Trisheeta_CSE422_17_Assignment01_Fall2024_-_TRISHEETA_JAHAN_AZAD.py<p></p><pre>
+import heapq
+
+with open("Input.txt", "r") as input_file:
+
+    def heuristicValue(file):
+        heuristic_own = {}
+        heuristic_neighbor = {}
+
+        for line in file:
+            line = line.replace("\n", "")
+            while "  " in line:
+                line = line.replace("  ", " ")
+
+            cities = []
+            current_word = ""
+            for char in line:
+                if char == " ":
+                    cities.append(current_word)
+                    current_word = ""
+                else:
+                    current_word += char
+            if current_word:
+                cities.append(current_word)
+
+            city = cities[0]
+            heuristic_own[city] = int(cities[1])
+
+            neighbors = {}
+            for i in range(2, len(cities), 2):
+                neighbor_city = cities[i]
+<a name="2"></a><font color="#0000FF"><a href="match180-1.html#2" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_2_8.gif"/></a>
+
+                distance = int(cities[i + 1])
+                neighbors[neighbor_city] = distance
+            heuristic_neighbor[city] = neighbors
+
+        return heuristic_own, heuristic_neighbor
+
+    heuristic_own, heuristic_neighbor = heuristicValue(input_file)
+</font><a name="0"></a><font color="#FF0000"><a href="match180-1.html#0" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_0_13.gif"/></a>
+
+
+def aStar(start, goal, neighbor_heuristics, own_heuristics):
+    visited = []
+    heapq.heappush(visited, (0, start))
+    paths = {start: None}
+    costs = {start: 0}
+
+    while visited:
+        current = heapq.heappop(visited)[1]
+
+        if current == goal:
+            break
+</font>
+        for neighbor, distance in neighbor_heuristics.get(current, {}).items():
+            new_cost = costs[current] + distance
+            if neighbor not in costs or new_cost &lt; costs[neighbor]:
+                costs[neighbor] = new_cost
+                priority = new_cost + own_heuristics[neighbor]
+<a name="1"></a><font color="#00FF00"><a href="match180-1.html#1" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_1_13.gif"/></a>
+
+                heapq.heappush(visited, (priority, neighbor))
+                paths[neighbor] = current
+
+    return paths, costs
+
+def outputBuilder(path_dict, cost_dict, start, goal):
+    path = []
+    current = goal
+
+    while current != start:
+        path.append(current)
+        current = path_dict[current]
+    path.append(start)
+</font>    final_path = ' --&gt; '.join(reversed(path))
+
+    print("Path:", final_path)
+    print("Total distance:", cost_dict[goal], "km")
+
+start_city = input("Enter the start node: ")
+goal_city = input("Enter the goal node: ")
+
+if start_city in heuristic_own and goal_city in heuristic_own:
+    path_data, cost_data = aStar(start_city, goal_city, heuristic_neighbor, heuristic_own)
+    outputBuilder(path_data, cost_data, start_city, goal_city)
+else:
+    print("Start or goal does not exist.")</pre>
+</body>
+</html>

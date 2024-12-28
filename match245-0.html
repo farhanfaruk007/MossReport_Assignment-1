@@ -1,0 +1,102 @@
+<html>
+<head>
+<title>C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/9/21341026_humayera_21341026_-_HUMAYERA_SHAYERA_HURI.py</title>
+</head>
+<body bgcolor="white">
+<hr/>
+C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/9/21341026_humayera_21341026_-_HUMAYERA_SHAYERA_HURI.py<p></p><pre>
+<a name="0"></a><font color="#FF0000"><a href="match245-1.html#0" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_0_11.gif"/></a>
+
+import heapq
+
+
+class Graph:
+    def __init__(self):
+        self.edge = {}
+        self.heuristics = {}
+
+    def add_new_edges(self, from_node, to_node, distance):
+        if from_node not in self.edge:
+            self.edge[from_node] = []
+</font><a name="1"></a><font color="#00FF00"><a href="match245-1.html#1" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_1_9.gif"/></a>
+
+        self.edge[from_node].append((to_node, distance))
+
+    def set_heuristic_value(self, node, value):
+        self.heuristics[node] = value
+
+    def get_new_neighbors(self, node):
+        return self.edge.get(node, [])
+</font>
+    def get_heuristic_value(self, node):
+        return self.heuristics.get(node, float('inf'))
+
+
+def read_graph_from_file(filename):
+    graph = Graph()
+    with open(filename, 'r') as file:
+        for line in file:
+            new_parts = line.split()
+            node = new_parts[0]
+            heuristic_value = int(new_parts[1])
+            graph.set_heuristic_value(node, heuristic_value)
+<a name="2"></a><font color="#0000FF"><a href="match245-1.html#2" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_2_8.gif"/></a>
+
+            for i in range(2, len(new_parts), 2):
+                neighbor = new_parts[i]
+                new_distance = int(new_parts[i+1])
+                graph.add_new_edges(node, neighbor, new_distance)
+    return graph
+
+
+def a_star_search_algorithm(graph, start, goal):
+</font>    open_list = []
+    heapq.heappush(open_list, (graph.get_heuristic_value(start), 0, start, []))
+    closed_list = set()
+
+    while open_list:
+        f_cost, g_cost, current_node, path = heapq.heappop(open_list)
+
+        if current_node in closed_list:
+            continue
+
+        path = path + [current_node]
+
+        if current_node == goal:
+            return g_cost, path
+
+        closed_list.add(current_node)
+
+        for neighbor, distance in graph.get_new_neighbors(current_node):
+            if neighbor in closed_list:
+                continue
+
+            g_new = g_cost + distance
+            h_new = graph.get_heuristic_value(neighbor)
+            f = g_new + h_new
+            heapq.heappush(open_list, (f, g_new, neighbor, path))
+
+    return None, []
+
+
+def main():
+    filename = r"C:\CSE422 Artificial Intelligence\lab\Input file.txt"  # file path
+    graph = read_graph_from_file(filename)
+
+    start_node = input("Start node: ")
+    end_node = input("Destination: ")
+
+    total_distance, path = a_star_search_algorithm(graph, start_node, end_node)
+
+    if path:
+        print(f"Path: {' -&gt; '.join(path)}")
+        print(f"Total distance: {total_distance} km")
+    else:
+        print("NO PATH FOUND")
+
+
+if __name__ == "__main__":
+    main()
+</pre>
+</body>
+</html>

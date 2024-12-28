@@ -1,0 +1,72 @@
+<html>
+<head>
+<title>C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/16/22301583_Israt_Abdullah_Neha_CSE422_16_Assignment01_Fall2024_-_ISRAT_ABDULLAH_NEHA.py</title>
+</head>
+<body bgcolor="white">
+<hr/>
+C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/18/22301526_Md._Nurul_Amin_Khan_Dipto_CSE422_18_Assignment01_Fall2024_-_Md._Nurul_Amin_Khan_Dipto.py<p></p><pre>
+# Reading input from file and converting to dictionary
+<a name="0"></a><font color="#FF0000"><a href="match141-0.html#0" target="0"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_0_20.gif"/></a>
+
+h_table = {}
+graph = {}
+with open("Input.txt") as file:
+    for line in file:
+        line = line.strip().split(" ")
+        h_table[line[0]] = int(line[1])
+        temp = {}
+        for i in range(2, len(line), 2):
+            temp[line[i]] = int(line[i + 1])
+</font>        graph[line[0]] = temp
+
+# Defining Start and Destination
+start = input("Start node: ").capitalize()
+destination = input("Destination: ").capitalize()
+
+def a_star(start, destination, graph, h_table):
+    # Creating Priority Queue (Fringe) using heapdict
+    import heapdict
+
+    q = heapdict.heapdict()
+    parent = {i: None for i in h_table.keys()}
+    p_cost = {i: float("inf") for i in h_table.keys()}
+<a name="1"></a><font color="#00FF00"><a href="match141-0.html#1" target="0"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_1_13.gif"/></a>
+
+    q[start] = h_table[start]
+    p_cost[start] = 0
+
+    while len(q) != 0:
+        n = q.popitem()
+
+        if n[0] == destination:
+            current = destination
+            path = [destination]
+</font>
+            while parent[current] != None:
+                path.insert(0, parent[current])
+                current = parent[current]
+
+            print("Path: " + " -&gt; ".join(path))
+            print("Total distance:", p_cost[destination], "km")
+            return "Success"
+
+        else: 
+            for successor in graph[n[0]]:
+                n_c = graph[n[0]][successor]
+<a name="2"></a><font color="#0000FF"><a href="match141-0.html#2" target="0"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_2_13.gif"/></a>
+
+                g_c = p_cost[n[0]] + n_c
+                
+                if g_c &lt; p_cost[successor]:
+                    p_cost[successor] = g_c
+                    parent[successor] = n[0]
+                    f_n = g_c + h_table[successor]
+                    q[successor] = f_n
+                    
+    print("NO PATH FOUND")
+</font>    return "Error"
+
+
+a_star(start, destination, graph, h_table)</pre>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<html>
+<head>
+<title>C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/13/21301301_Hritick_Kumar_Mitra_CSE422Assignment01_Fall2024_-_HRITICK_KUMAR_MITRA.py</title>
+</head>
+<body bgcolor="white">
+<hr/>
+C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/14/21301427_CSE422_Section14_LabAssignment1_-_KABBO_BHATTACHARJEE.py<p></p><pre>
+#Kabbo Bhattacharjee
+#21301427
+#SEC 14
+#Artificial Intellegence 
+#Informed Search -(A* Algorithm)
+#CSE 422
+
+import heapq
+
+#Fuction will read data from my input file
+def read_input(file_path):
+    graph = {}
+    heuristics = {}
+    
+    with open(file_path, 'r') as f:
+        for line in f:
+            parts = line.split()
+            city = parts[0]
+            heuristics[city] = int(parts[1])
+            graph[city] = {}
+            for i in range(2, len(parts), 2):
+<a name="1"></a><font color="#00FF00"><a href="match204-0.html#1" target="0"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_1_7.gif"/></a>
+
+                neighbor = parts[i]
+                distance = int(parts[i + 1])
+                graph[city][neighbor] = distance
+
+    return graph, heuristics
+
+# A* Search Algorithm
+def a_star_search(graph, heuristics, start, goal):
+</font>    open_set = []
+    heapq.heappush(open_set, (0 + heuristics[start], start))
+    came_from = {}
+    g_score = {city: float('inf') for city in graph}
+    g_score[start] = 0
+    f_score = {city: float('inf') for city in graph}
+    f_score[start] = heuristics[start]
+
+    while open_set:
+        present = heapq.heappop(open_set)[1]
+
+        if present == goal:
+<a name="0"></a><font color="#FF0000"><a href="match204-0.html#0" target="0"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_0_12.gif"/></a>
+
+            return reconstruct_path(came_from, present)
+
+        for neighbor, cost in graph[present].items():
+            tentative_g_score = g_score[present] + cost
+            if tentative_g_score &lt; g_score[neighbor]:
+                came_from[neighbor] = present
+                g_score[neighbor] = tentative_g_score
+                f_score[neighbor] = tentative_g_score + heuristics[neighbor]
+                if neighbor not in [i[1] for i in open_set]:
+</font>                    heapq.heappush(open_set, (f_score[neighbor], neighbor))
+
+    return None  # If there is no path
+
+
+<a name="2"></a><font color="#0000FF"><a href="match204-0.html#2" target="0"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_2_7.gif"/></a>
+
+def reconstruct_path(came_from, present):
+    total_path = [present]
+    while present in came_from:
+        present = came_from[present]
+        total_path.append(present)
+    return total_path[::-1]
+</font>
+
+def main():
+    file_path = 'inputfile.txt'  
+    graph, heuristics = read_input(file_path)
+
+    start = input("Start node: ")
+    goal = input("Destination: ")
+
+    path = a_star_search(graph, heuristics, start, goal)
+
+    # Prepare output
+    output_lines = []
+    if path:
+        total_distance = sum(graph[path[i]][path[i + 1]] for i in range(len(path) - 1))
+        output_lines.append("Path: " + " -&gt; ".join(path))
+        output_lines.append("Total distance: " + str(total_distance) + " km")
+    else:
+        output_lines.append("NO PATH FOUND")
+
+    # Terminal print
+    for line in output_lines:
+        print(line)
+
+    # Printing the result in the output
+    with open('output.txt', 'w') as f:
+        for line in output_lines:
+            f.write(line + '\n')
+
+if __name__ == "__main__":
+    main()
+
+
+
+
+</pre>
+</body>
+</html>

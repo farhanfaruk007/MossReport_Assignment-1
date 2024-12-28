@@ -1,0 +1,65 @@
+<html>
+<head>
+<title>C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/5/20101076_Lab01_05_-_SAJID_MAHMUD.py</title>
+</head>
+<body bgcolor="white">
+<hr/>
+C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/5/20101076_Lab01_05_-_SAJID_MAHMUD.py<p></p><pre>
+import heapq
+#read file
+def read_input(filename):
+<a name="0"></a><font color="#FF0000"><a href="match212-1.html#0" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_0_22.gif"/></a>
+
+    graph = {}
+    heuristic = {}
+    with open(filename, 'r') as file:
+        for line in file:
+            parts = line.strip().split()
+            if len(parts) &lt; 2:
+                continue
+            city = parts[0]
+            heuristic_val =int(parts[1])
+            heuristic[city] = heuristic_val
+            neighbors = []
+</font>            for i in range(2, len(parts), 2):
+                neighbor = parts[i]
+                distance = int(parts[i + 1])
+<a name="2"></a><font color="#0000FF"><a href="match212-1.html#2" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_2_11.gif"/></a>
+
+                neighbors.append((neighbor, distance))
+            graph[city] = neighbors
+    return graph, heuristic
+
+# A* search
+def a_star_search(graph, heuristic, start, goal):
+    open_list = []
+    heapq.heappush(open_list, (heuristic[start], 0, start, [start]))  # (f_score, g_score, city, path)    
+</font><a name="1"></a><font color="#00FF00"><a href="match212-1.html#1" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_1_12.gif"/></a>
+
+    visited = set()
+    
+    while open_list:
+        f_score, g_score, current, path = heapq.heappop(open_list)
+        if current == goal:
+            return path, g_score
+</font>        
+        visited.add(current)
+        for neighbor, distance in graph[current]:
+            if neighbor not in visited:
+                new_g_score = g_score + distance
+                new_f_score = new_g_score + heuristic[neighbor]
+                heapq.heappush(open_list, (new_f_score, new_g_score, neighbor, path + [neighbor]))
+
+def main(filename, start, goal):
+    graph, heuristic = read_input(filename)
+    path, cost = a_star_search(graph, heuristic, start, goal)
+    
+    if path:
+        print("Most optimal value for the route Arad to Bucharest:", path)
+        print("Total cost:", cost)
+
+filename = 'input.txt'
+main(filename, 'Arad', 'Bucharest')
+</pre>
+</body>
+</html>

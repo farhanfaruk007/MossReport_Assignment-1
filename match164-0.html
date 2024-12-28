@@ -1,0 +1,83 @@
+<html>
+<head>
+<title>C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/7/22101236_Sawrave_Ahmed_CSE422_07_Assignment01_Fall2024_-_SAWRAVE_AHMED.py</title>
+</head>
+<body bgcolor="white">
+<hr/>
+C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/7/22101236_Sawrave_Ahmed_CSE422_07_Assignment01_Fall2024_-_SAWRAVE_AHMED.py<p></p><pre>
+from queue import PriorityQueue
+
+def a_star_algo(graph,start,goal):
+    nodes_queue = PriorityQueue()
+    nodes_queue.put((0, start))
+    parent_count = {}
+    g_N = {node: float('inf') for node in graph}  # g(n) actual path cost from start to particular node
+    f_N = {node: float('inf') for node in graph}  # (according to formula h(n) here f_N) = approximate heuristic value from start to end
+
+
+    g_N[start] = 0  # actual path cost from same node to node is 0
+    f_N[start] = graph[start]['heuristic']
+
+    while not nodes_queue.empty():
+        curr = nodes_queue.get()[1]  # getting the minimum approx path cost
+        if curr == goal:
+            path = []
+            while curr in parent_count:
+                path.append(curr)
+                curr = parent_count[curr]
+            path.append(start)
+            path.reverse()
+            totalDist = g_N[goal]
+
+<a name="2"></a><font color="#0000FF"><a href="match164-1.html#2" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_2_8.gif"/></a>
+
+            return f"path: {' -&gt; '.join(path)}\nTotal distance: {totalDist} km"
+        
+        for neighbour, dist in graph[curr]['neighbours'].items():
+            approx_g_N = g_N[curr] + dist   # sum of current known path cost + distance to neighbouring node
+
+            if approx_g_N &lt; g_N[neighbour]:
+</font><a name="0"></a><font color="#FF0000"><a href="match164-1.html#0" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_0_20.gif"/></a>
+
+                parent_count[neighbour] = curr
+                g_N[neighbour] = approx_g_N # updating the value
+                f_N[neighbour] = g_N[neighbour] + graph[neighbour]['heuristic']  # updating the value
+                nodes_queue.put((f_N[neighbour], neighbour))
+                
+
+    return 'NO PATH FOUND'
+
+def r_inp(filename):
+    web = {}
+    with open(filename, 'r') as file:
+        for line in file:
+            portions = line.split()
+            node = portions[0]
+</font>            heuristic = int(portions[1])
+            neighbours = {}
+
+            for i in range(2, len(portions), 2):
+<a name="1"></a><font color="#00FF00"><a href="match164-1.html#1" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_1_13.gif"/></a>
+
+                neighbour = portions[i]
+                dist = int(portions[i+1])
+                neighbours[neighbour] = dist
+
+            web[node] = {'heuristic': heuristic, 'neighbours': neighbours}
+            
+    return web 
+
+def main():
+    graph = r_inp('input.txt')
+    startNode = input('Enter the start node: ')
+    endNode = input('Enter the end node: ')
+</font>
+    result = a_star_algo(graph, startNode, endNode)
+    print(result)
+
+if __name__ == '__main__':
+    main()
+
+    </pre>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<html>
+<head>
+<title>C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/3/23101320_SadmanFaiz_CSE422_03_Lab_Assignment01_Fall2024_-_SADMAN_FAIZ.py</title>
+</head>
+<body bgcolor="white">
+<hr/>
+C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/3/23101320_SadmanFaiz_CSE422_03_Lab_Assignment01_Fall2024_-_SADMAN_FAIZ.py<p></p><pre>
+import math
+
+from queue import PriorityQueue
+
+f1 = open("Input1.txt", "r")
+r = f1.read().split("\n")
+graph = {}
+h_v = {}                 #For storing heuristic values
+#print(r)
+
+for i in r:
+    #print(i)
+    list = i.split(" ")
+    #print(list)
+    h_v[list[0]] = int(list[1])             #assigning key-value into the h_v dict
+    #print(h_v)
+    d = []
+
+    for x in range(2,len(list)-1,2):
+        #print(list[x])
+        if x+1 &lt; len(list):
+          d.append((list[x], int(list[x + 1])))
+    #print(graph)
+    graph[list[0]] = d
+
+
+s_n =input("Start Node: ")
+des_n =input("Destination Node: ")
+def Astar_search(graph, start, dest, heu_val):
+    queue = PriorityQueue()
+    p = {}
+    dis = {}
+    total_cost = {}
+<a name="0"></a><font color="#FF0000"><a href="match139-1.html#0" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_0_23.gif"/></a>
+
+    for n in graph.keys():
+        dis[n] = math.inf
+        total_cost[n] = math.inf
+        p[n] = None
+
+
+    
+
+    dis[start] = 0
+
+    total_cost[start] = heu_val[start]
+    queue.put((total_cost[start], start))
+    while not queue.empty():
+        curr_cost, curr_node = queue.get()
+
+
+        if curr_node == dest:
+            path = []
+            while curr_node is not None:
+</font><a name="1"></a><font color="#00FF00"><a href="match139-1.html#1" target="1"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_1_23.gif"/></a>
+
+                path.append(curr_node)
+                curr_node = p[curr_node]
+            path.reverse()
+            return path, dis[dest]
+
+
+        for nbr, weight in graph[curr_node]:
+            new_dis = dis[curr_node] + weight
+            total_cost_beside = new_dis + heu_val[ nbr]
+
+            if new_dis &lt; dis[ nbr]:
+                dis[ nbr] = new_dis
+                p[ nbr] = curr_node
+                queue.put((total_cost_beside, nbr))
+
+    return "NO PATH FOUND", 0
+</font>
+pathway, cost = Astar_search(graph, s_n, des_n, h_v)
+if cost != 0:
+    print("Path:", ' -&gt; '.join(pathway))
+    print(f'Total distance: {cost} km')
+else:
+    print(pathway)
+
+</pre>
+</body>
+</html>

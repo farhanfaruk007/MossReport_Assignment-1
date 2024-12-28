@@ -1,0 +1,98 @@
+<html>
+<head>
+<title>C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/9/22299312_Maidul_Islam_22299312_-_MAIDUL_ISLAM.py</title>
+</head>
+<body bgcolor="white">
+<hr/>
+C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/10/22301196_CSE422_10_LabAssignment1_-_MARZANUL_MOMENINE.py<p></p><pre>
+<a name="1"></a><font color="#00FF00"><a href="match165-0.html#1" target="0"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_1_12.gif"/></a>
+
+class Location:
+    def __init__(self, name, heuristic):
+        self.name = name
+        self.heuristic = heuristic
+        self.adjacent_locations = {}
+        
+    def add_adjacent_location(self, adjacent_name, distance):
+        self.adjacent_locations[adjacent_name] = distance
+
+def load_map_from_file(filename):
+    locations = {}
+</font>    with open(filename, 'r') as file:
+<a name="2"></a><font color="#0000FF"><a href="match165-0.html#2" target="0"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_2_9.gif"/></a>
+
+        lines = file.readlines()
+        for line in lines:
+            parts = line.strip().split()
+            location_name = parts[0]
+            heuristic = int(parts[1])
+            location = Location(location_name, heuristic)
+            for i in range(2, len(parts), 2):
+</font>                adjacent = parts[i]
+                distance = int(parts[i + 1])
+                location.add_adjacent_location(adjacent, distance)
+            locations[location_name] = location
+    return locations
+
+def search_path(locations, start_name):
+    goal_name = "Bucharest"
+    if start_name not in locations:
+        return None, None
+
+    # Initialize cost and path tracking
+    cost_from_start = {loc: float('inf') for loc in locations}
+    cost_from_start[start_name] = 0
+    previous_location = {}
+
+    # Priority queue for open locations to explore
+    open_set = [[locations[start_name].heuristic, start_name]]
+
+    while open_set:
+        # Select the location with the lowest estimated total cost
+        current_cost, current_name = open_set.pop(0)
+
+        # If the goal is reached, reconstruct and return the path
+        if current_name == goal_name:
+            path = reconstruct_path(previous_location, start_name, goal_name)
+            return path, cost_from_start[goal_name]
+
+        # Explore neighbors
+        current_location = locations[current_name]
+<a name="0"></a><font color="#FF0000"><a href="match165-0.html#0" target="0"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_0_15.gif"/></a>
+
+        for adjacent_name, distance in current_location.adjacent_locations.items():
+            # Calculate the cost from start to the neighboring location
+            new_cost = cost_from_start[current_name] + distance
+            if new_cost &lt; cost_from_start[adjacent_name]:
+                previous_location[adjacent_name] = current_name
+                cost_from_start[adjacent_name] = new_cost
+                estimated_total_cost = new_cost + locations[adjacent_name].heuristic
+                open_set.append([estimated_total_cost, adjacent_name])
+                open_set.sort()  # Keeps open_set as a priority queue
+</font>
+    return None, None
+
+def reconstruct_path(previous_location, start_name, goal_name):
+    path = []
+    current = goal_name
+    while current != start_name:
+        path.append(current)
+        current = previous_location[current]
+    path.append(start_name)
+    path.reverse()
+    return path
+
+# Main Execution
+locations = load_map_from_file('Input file.txt')
+start_location = input("Start Location: ")
+print("Destination: Bucharest")
+path, total_distance = search_path(locations, start_location)
+
+if path is None:
+    print("NO PATH FOUND")
+else:
+    print("\nPath:", " -&gt; ".join(path))
+    print("Total distance:", total_distance, "km")
+</pre>
+</body>
+</html>

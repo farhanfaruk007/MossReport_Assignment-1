@@ -1,0 +1,82 @@
+<html>
+<head>
+<title>C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/6/24141076_AbdullahAlZubayer_CSE422_06_Assignment01_Fall2024_-_ABDULLAH_AL_ZUBAYER.py</title>
+</head>
+<body bgcolor="white">
+<hr/>
+C:/Users/Farhan_Faruk/Downloads/Lab1_Submission/14/22299019_CSE422_14_LabAssignment1_-_FAZLE_MOHAMMED_TASFIQ.py<p></p><pre>
+<a name="1"></a><font color="#00FF00"><a href="match64-0.html#1" target="0"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_1_19.gif"/></a>
+
+import heapq
+
+x = open("Input file.txt", 'r')
+li = x.readlines()
+
+graph={}
+est_cost={}
+path_dis={}
+for i in range(len(li)):
+  nodes=li[i].strip().split(' ')
+  par=nodes[0]
+  heu_cost=int(nodes[1])
+  est_cost[par]=heu_cost
+  neib=[]
+  for j in range(2,len(nodes),2):
+</font>    n=(nodes[j], int(nodes[j+1]))
+    neib.append(n)
+  graph[par]=neib
+
+# for i in graph.items():
+#   print(i)
+# for i in est_cost.items():
+#   print(i)
+
+def A_search(s, g):
+<a name="0"></a><font color="#FF0000"><a href="match64-0.html#0" target="0"><img align="left" alt="other" border="0" src="http://moss.stanford.edu/bitmaps/tm_0_47.gif"/></a>
+
+    q=[]
+    heapq.heappush(q,(est_cost[s],s))
+    node=(est_cost[s],s)
+    while True:
+      if len(q)==0:
+        print("NO PATH FOUND")
+      
+      node=heapq.heappop(q)
+      if node[1]==g:
+        break
+      
+      neibs=graph[node[1]]
+      for i in neibs:
+        n, val=i
+        dist=node[0]-est_cost[node[1]]
+        total=dist+val+est_cost[n]
+        path_dis[(total,n)]=node
+        heapq.heappush(q,(total,n))
+    path=[node]
+    final=node
+    # print(final)
+    while final[1]!=s:
+        x=path_dis[final]
+        path.append(x)
+        final=x
+    path=path[::-1]
+
+    # for i in path_dis.items():
+    #     print(i)
+
+    print("\nTotal Distance:",node[0])
+    print("Path: ",end='')
+</font>    # print(path)
+    for i in range(len(path)):
+        if i!=len(path)-1:
+            print(path[i][1],'-&gt; ',end='')
+        else:
+            print(path[i][1],end='')
+
+Start = input()
+Goal = input()
+A_search(Start, Goal)
+
+x.close()</pre>
+</body>
+</html>
